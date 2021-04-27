@@ -226,3 +226,58 @@ html {
     padding-right: 0px !important;
     //font-size: 1.125rem;
 }
+
+.center{
+    margin: auto;
+    width: 35%;
+    height: 70%;
+    padding: 10px;
+}
+
+.centerWord{
+    margin: auto;
+    text-align: center;
+    color: red;
+    width: 45%;
+    padding-top: 100px; 
+    font-weight: bold;
+    font-size: 150%;
+}
+
+#centerMap{
+    margin: auto;
+    width: 50%;
+    min-height: 0%;
+    max-height: 75%;
+    background-color: white;
+}
+
+.centerMapHeader{
+    text-align: center;
+    background-color: red;
+    width: 100%;
+    padding: 25px;
+    font-weight: bold;
+}
+
+.centerMapSide{
+    width: 480px;
+    height: 100%;
+    margin: 0px;
+}
+
+.centerMapMain{
+    padding-left: 205px !important;
+    width: 100%;
+    height: 100%;
+}
+.box{
+    width: 100%;
+    height: 100%
+}
+.boxFooter{
+    padding-top: 2.5px; 
+    text-align: center;
+    background-color: red;
+    font-weight: bold;
+}

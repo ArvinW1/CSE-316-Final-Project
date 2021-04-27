@@ -10,12 +10,18 @@ import { GET_DB_TODOS } 				from '../../cache/queries';
 import React, { useState } 				from 'react';
 import { useMutation, useQuery } 		from '@apollo/client';
 import { WNavbar, WSidebar, WNavItem } 	from 'wt-frontend';
-import { WLayout, WLHeader, WLMain, WLSide } from 'wt-frontend';
+import { WLayout, WLHeader, WLMain, WLSide, WButton } from 'wt-frontend';
 import { UpdateListField_Transaction, 
 	SortItems_Transaction,
 	UpdateListItems_Transaction, 
 	ReorderItems_Transaction, 
 	EditItem_Transaction } 				from '../../utils/jsTPS';
+import WCard from 'wt-frontend/build/components/wcard/WCard';
+import WCHeader from 'wt-frontend/build/components/wcard/WCHeader';
+import WCContent from 'wt-frontend/build/components/wcard/WCContent';
+import WCMedia from 'wt-frontend/build/components/wcard/WCMedia';
+import WCFooter from 'wt-frontend/build/components/wcard/WCFooter';
+import WLFooter from 'wt-frontend/build/components/wlayout/WLFooter';
 
 const Homescreen = (props) => {
 
@@ -122,8 +128,8 @@ const Homescreen = (props) => {
 	const addItem = async () => {
 		let list = activeList;
 		const items = list.items;
-		const newItem = {
-			_id: '',
+		const newItem = { // <redirect to: /home/event.target._id/>
+			_id: '',// /home/:_id
 			description: 'No Description',
 			due_date: 'No Date',
 			assigned_to: 'No One',
@@ -233,7 +239,7 @@ const Homescreen = (props) => {
 	}
 
 	return (
-		<WLayout wLayout="header-lside">
+		<WLayout wLayout="header">
 			<WLHeader>
 				<WNavbar color="colored">
 					<ul>
@@ -251,7 +257,7 @@ const Homescreen = (props) => {
 				</WNavbar>
 			</WLHeader>
 
-			<WLSide side="left">
+			{/* <WLSide side="left">
 				<WSidebar>
 					{
 						activeList ? 
@@ -264,8 +270,8 @@ const Homescreen = (props) => {
 							<></>
 					}
 				</WSidebar>
-			</WLSide>
-			<WLMain>
+			</WLSide> */}
+			{/* <WLMain>
 				{
 					activeList ? 
 					
@@ -283,7 +289,24 @@ const Homescreen = (props) => {
 							<div className="container-secondary" />
 				}
 
-			</WLMain>
+			</WLMain> */}
+			{
+			!auth && <WCard wLayout = "content-footer" className = "center">
+				<WCFooter className = "centerWord">WELCOME TO THE WORLD DATA MAPPER</WCFooter>
+			</WCard>
+			}
+			
+			{
+				auth && <WLayout wLayout = "header-lside" id = "centerMap"> 
+				<WLHeader className = "centerMapHeader"> Your Maps </WLHeader>
+				<WLSide className = "centerMapSide"> <WSidebar></WSidebar> </WLSide>
+				<WLMain className = "centerMapMain">
+					<WCard wLayout = "content-footer" className = "box">
+					<WLFooter className = "boxFooter"> <WButton color= "danger" size = "large" span = "true">Create A New Map </WButton></WLFooter>
+				</WCard>
+				</WLMain>
+				</WLayout>
+			}
 
 			{
 				showDelete && (<Delete deleteList={deleteList} activeid={activeList._id} setShowDelete={setShowDelete} />)
