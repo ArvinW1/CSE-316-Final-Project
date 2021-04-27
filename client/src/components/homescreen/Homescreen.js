@@ -7,23 +7,18 @@ import NavbarOptions 					from '../navbar/NavbarOptions';
 import * as mutations 					from '../../cache/mutations';
 import SidebarContents 					from '../sidebar/SidebarContents';
 import { GET_DB_TODOS } 				from '../../cache/queries';
-import React, { useState } 				from 'react';
+import React, { useState, Component } 				from 'react';
 import { useMutation, useQuery } 		from '@apollo/client';
 import { WNavbar, WSidebar, WNavItem } 	from 'wt-frontend';
-import { WLayout, WLHeader, WLMain, WLSide, WButton } from 'wt-frontend';
+import { WLayout, WLHeader, WLMain, WLSide, WButton, WCard, WCFooter } from 'wt-frontend';
 import { UpdateListField_Transaction, 
 	SortItems_Transaction,
 	UpdateListItems_Transaction, 
 	ReorderItems_Transaction, 
 	EditItem_Transaction } 				from '../../utils/jsTPS';
-import WCard from 'wt-frontend/build/components/wcard/WCard';
-import WCHeader from 'wt-frontend/build/components/wcard/WCHeader';
-import WCContent from 'wt-frontend/build/components/wcard/WCContent';
-import WCMedia from 'wt-frontend/build/components/wcard/WCMedia';
-import WCFooter from 'wt-frontend/build/components/wcard/WCFooter';
-import WLFooter from 'wt-frontend/build/components/wlayout/WLFooter';
+	import {withRouter } from 'react-router-dom';
 
-const Homescreen = (props) => {
+function Homescreen (props) {
 
 	const keyCombination = (e, callback) => {
 		if(e.key === 'z' && e.ctrlKey) {
@@ -237,7 +232,11 @@ const Homescreen = (props) => {
 		tpsRedo();
 		
 	}
-
+	
+	const changePage = () =>{
+		props.history.push("/newpage")
+	}
+	
 	return (
 		<WLayout wLayout="header">
 			<WLHeader>
@@ -303,7 +302,7 @@ const Homescreen = (props) => {
 				<WLSide className = "centerMapSide"> <WSidebar></WSidebar> </WLSide>
 				<WLMain className = "centerMapMain">
 					<WCard wLayout = "content-footer" className = "box">
-					<WLFooter className = "boxFooter"> <WButton color= "danger" size = "large" span = "true">Create A New Map </WButton></WLFooter>
+					<WCFooter className = "boxFooter"> <WButton color= "danger" size = "large" span = "true" onClick = {changePage}>Create A New Map </WButton></WCFooter>
 				</WCard>
 				</WLMain>
 				</WLayout>
@@ -325,4 +324,4 @@ const Homescreen = (props) => {
 	);
 };
 
-export default Homescreen;
+export default withRouter(Homescreen);

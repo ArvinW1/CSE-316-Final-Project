@@ -51,7 +51,6 @@ const LoggedOut = (props) => {
 
 
 const NavbarOptions = (props) => {
-    console.log(props.user)
     return (
         <>
             {
