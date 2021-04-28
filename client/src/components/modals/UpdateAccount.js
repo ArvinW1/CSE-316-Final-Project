@@ -6,7 +6,7 @@ import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 
 
 const UpdateAccount = (props) => {
     const client = useApolloClient();
-    const [input, setInput] = useState({ email: '', password: '', firstName: '', lastName: ''});
+    const [input, setInput] = useState({ email: props.user.email, password: '', firstName: props.user.firstName, lastName: props.user.lastName});
 	const [loading, toggleLoading] = useState(false);
     const [showErr, displayErrorMsg] = useState(false);
     const errorMsg = "Email already in use";
@@ -24,18 +24,13 @@ const UpdateAccount = (props) => {
 		if (loading) { toggleLoading(true) };
 		if (error) { return `Error: ${error.message}` };
 		if (data) {
-			console.log(data)
 			toggleLoading(false);
 			if(data.update.email === 'already exists') {
 				displayErrorMsg(true);
 			    return;
 			}
 			else {
-				const { data } = await props.fetchUser();
-                if (data) {
-                    let reset = await client.resetStore();
-                }
-			props.setShowUpdate(false);
+				props.setShowUpdate(false);
             }
 
 		};

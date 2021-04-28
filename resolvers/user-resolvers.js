@@ -103,8 +103,10 @@ module.exports = {
 				initials: found.initials
 			})
 			const saved = await user.save();
-			res.clearCookie('refresh-token');
-			res.clearCookie('access-token');
+			const accessToken = tokens.generateAccessToken(user);
+			const refreshToken = tokens.generateRefreshToken(user);
+			res.cookie('refresh-token', refreshToken, { httpOnly: true , sameSite: 'None', secure: true}); 
+			res.cookie('access-token', accessToken, { httpOnly: true , sameSite: 'None', secure: true}); 
 			if(deleted) return user;
 			else return found;
 		},
