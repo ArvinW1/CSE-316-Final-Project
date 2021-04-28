@@ -17,6 +17,7 @@ import { UpdateListField_Transaction,
 	ReorderItems_Transaction, 
 	EditItem_Transaction } 				from '../../utils/jsTPS';
 import {withRouter } from 'react-router-dom';
+import UpdateAccount from '../modals/UpdateAccount';
 
 function Homescreen (props) {
 
@@ -42,6 +43,7 @@ function Homescreen (props) {
 	const [showDelete, toggleShowDelete] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showCreate, toggleShowCreate] 	= useState(false);
+	const [showUpdate, toggleShowUpdate] 	= useState(false);
 	const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
@@ -208,20 +210,30 @@ function Homescreen (props) {
 	const setShowLogin = () => {
 		toggleShowDelete(false);
 		toggleShowCreate(false);
+		toggleShowUpdate(false);
 		toggleShowLogin(!showLogin);
 	};
 
 	const setShowCreate = () => {
 		toggleShowDelete(false);
 		toggleShowLogin(false);
+		toggleShowUpdate(false);
 		toggleShowCreate(!showCreate);
 	};
 
 	const setShowDelete = () => {
 		toggleShowCreate(false);
 		toggleShowLogin(false);
+		toggleShowUpdate(false);
 		toggleShowDelete(!showDelete)
 	};
+
+	const setShowUpdate = () =>{
+		toggleShowCreate(false);
+		toggleShowLogin(false);
+		toggleShowDelete(false);
+		toggleShowUpdate(!showUpdate)
+	}
 	
 	const sort = (criteria) => {
 		let prevSortRule = sortRule;
@@ -251,7 +263,7 @@ function Homescreen (props) {
 							fetchUser={props.fetchUser} 	auth={auth} 
 							setShowCreate={setShowCreate} 	setShowLogin={setShowLogin}
 							reloadTodos={refetch} 			setActiveList={loadTodoList}
-							user = {props.user} 
+							user = {props.user} 			setShowUpdate = {setShowUpdate}
 						/>
 					</ul>
 				</WNavbar>
@@ -318,6 +330,10 @@ function Homescreen (props) {
 
 			{
 				showLogin && (<Login fetchUser={props.fetchUser} reloadTodos={refetch}setShowLogin={setShowLogin} />)
+			}
+			
+			{
+				showUpdate && (<UpdateAccount user = {props.user} fetchUser={props.fetchUser} setShowUpdate = {setShowUpdate}/>)
 			}
 
 		</WLayout>

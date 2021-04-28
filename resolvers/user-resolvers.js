@@ -73,6 +73,40 @@ module.exports = {
 			res.cookie('refresh-token', refreshToken, { httpOnly: true , sameSite: 'None', secure: true}); 
 			res.cookie('access-token', accessToken, { httpOnly: true , sameSite: 'None', secure: true}); 
 			return user;
+		},/**
+		 * 
+		 * @param {object} args - Update info
+		 * @param {object} res response object containing the current access/refresh tokens
+		 * @returns {boolean} old or new user
+		 */
+		update: async (_, args, { res }) =>{
+			const {oldEmail, email, password, firstName, lastName } = args;
+			const alreadyRegistered = await User.findOne({email: oldEmail});
+			if(alreadyRegistered && alreadyRegistered.email !== email) {
+				console.log('User with that email already registered.');
+				return(new User({
+					_id: '',
+					firstName: '',
+					lastName: '',
+					email: 'already exists', 
+					password: '',
+					initials: ''}));
+			}const hashed = await bcrypt.hash(password, 10);
+			const found = await User.findOne({email: email});
+			const deleted = await User.deleteOne({email: email});
+			const user = new User({
+				_id: found._id,
+				firstName: firstName,
+				lastName: lastName,
+				email: email, 
+				password: hashed,
+				initials: found.initials
+			})
+			const saved = await user.save();
+			res.clearCookie('refresh-token');
+			res.clearCookie('access-token');
+			if(deleted) return user;
+			else return found;
 		},
 		/** 
 			@param 	 {object} res - response object containing the current access/refresh tokens  
