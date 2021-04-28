@@ -28,11 +28,9 @@ const App = () => {
 						<Homescreen tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/>
 					} 
 				/>
-				<Route 
-				path = "/newpage" 
-					render={() => 
-						<Homescreen tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/>
-					}  /> 
+				<Route path = "/newpage" >
+					<Homescreen tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/> 
+				</Route>
 			</Switch>
 		</BrowserRouter>
 	);

@@ -246,7 +246,7 @@ function Homescreen (props) {
 	}
 	
 	const changePage = () =>{
-		props.history.push("/newpage")
+		props.history.push("/anything")
 	}
 	
 	return (
