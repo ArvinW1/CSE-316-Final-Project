@@ -45,6 +45,12 @@ export const ADD_ITEM = gql`
 	}
 `;
 
+export const ADD_SUBREGION = gql`
+	mutation AddSubregion($subregion: SubregionInput!, $_id: String!, $index: Int!){
+		addSubregion(subregion: $subregion, _id: $_id, index: $index)
+	}
+`;
+
 export const DELETE_ITEM = gql`
 	mutation DeleteItem($itemId: String!, $_id: String!) {
 		deleteItem(itemId: $itemId, _id: $_id) {
@@ -110,6 +116,25 @@ export const ADD_TODOLIST = gql`
 			sortDirection
 		}
 	}
+`;
+
+export const ADD_MAPLIST = gql`
+		mutation AddMaplist($map: MapInput!){
+			addMaplist(map: $map){
+				_id
+				name
+				owner
+				subregions{
+					_id
+					name
+        			capital
+        			leader
+        			landmarks
+        			parent
+        			subregions
+				}
+			}
+		}
 `;
 
 export const DELETE_TODOLIST = gql`

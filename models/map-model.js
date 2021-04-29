@@ -16,15 +16,6 @@ const mapSchema = new Schema(
 			type: String,
 			required: true
 		},
-		capital: {
-            type: String,
-            required: true
-        },
-        leader: {
-            type: String,
-            required: true
-        },
-        landmarks: [Landmark],
         subregions: [Subregion]
 	},
 	{ timestamps: true }

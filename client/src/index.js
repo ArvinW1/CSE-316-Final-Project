@@ -13,9 +13,9 @@ const cache = new InMemoryCache({
 	*/
 	dataIdFromObject: object => `${object.__typename}:${object._id}`,
 	typePolicies: {
-		Todolist: {
+		Map: {
 			fields: {
-				items: {
+				subregions: {
 					merge(existing, incoming){
 						return incoming
 					}
@@ -24,7 +24,7 @@ const cache = new InMemoryCache({
 		},
 		Query: {
 			fields: {
-				getAllTodos: {
+				getAllMap: {
 					merge(existing, incoming){
 						return incoming
 					}

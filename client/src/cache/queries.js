@@ -11,21 +11,40 @@ export const GET_DB_USER = gql`
 	}
 `;
 
-export const GET_DB_TODOS = gql`
-	query GetDBTodos {
-		getAllTodos {
+// export const GET_DB_TODOS = gql`
+// 	query GetDBTodos {
+// 		getAllTodos {
+// 			_id
+// 			name
+// 			owner
+// 			items {
+// 				_id
+// 				description
+// 				due_date
+// 				assigned_to
+// 				completed
+// 			}
+// 			sortRule
+// 			sortDirection
+// 		}
+// 	}
+// `;
+
+export const GET_DB_MAP = gql`
+	query GetDBMaps {
+		getAllMaps {
 			_id
 			name
 			owner
-			items {
+			subregions{
 				_id
-				description
-				due_date
-				assigned_to
-				completed
+				name
+        		capital
+        		leader
+        		landmarks
+        		parent
+        		subregions
 			}
-			sortRule
-			sortDirection
 		}
 	}
 `;

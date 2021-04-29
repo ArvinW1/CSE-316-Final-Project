@@ -23,8 +23,8 @@ const subregionSchema = new Schema(
         type: String,
         required: true
     },
-    landmarks: [Landmark],
-    subregions: [Subregion]
+    landmarks: [String],
+    subregions: [ObjectId]
 }
 );
 
