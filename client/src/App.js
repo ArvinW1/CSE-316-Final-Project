@@ -4,6 +4,7 @@ import { useQuery } 	from '@apollo/client';
 import * as queries 	from './cache/queries';
 import { jsTPS } 		from './utils/jsTPS';
 import { BrowserRouter, Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import Regionviewer from './components/subregion/Regionviewer';
  
 const App = () => {
 	let user = null;
@@ -31,6 +32,7 @@ const App = () => {
 				<Route path = "/newpage" >
 					<Homescreen tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/> 
 				</Route>
+				<Route path = "/regionviewer/:_id"> <Regionviewer tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/>  </Route>
 			</Switch>
 		</BrowserRouter>
 	);
