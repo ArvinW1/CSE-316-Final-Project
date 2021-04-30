@@ -98,7 +98,7 @@ function Homescreen(props) {
 	const mutationOptions = {
 		refetchQueries: [{ query: GET_DB_MAP }],
 		awaitRefetchQueries: true,
-		onCompleted: () => reloadList()
+		//onCompleted: () => reloadList()
 	}
 
 	const [ReorderTodoItems] = useMutation(mutations.REORDER_ITEMS, mutationOptions);
@@ -111,6 +111,7 @@ function Homescreen(props) {
 	const [DeleteTodolist] = useMutation(mutations.DELETE_TODOLIST);
 	const [AddMapList] = useMutation(mutations.ADD_MAPLIST);
 	const [DeleteMap] = useMutation(mutations.DELETE_MAP);
+	const [UpdateMapField] = useMutation(mutations.UPDATE_MAP_FIELD, mutationOptions);
 
 
 	const tpsUndo = async () => {
@@ -222,9 +223,10 @@ function Homescreen(props) {
 	}
 
 	const updateListField = async (_id, field, value, prev) => {
-		let transaction = new UpdateListField_Transaction(_id, field, prev, value, UpdateTodolistField);
-		props.tps.addTransaction(transaction);
-		tpsRedo();
+		const { data } = await UpdateMapField({ variables: { _id: _id, field: field, value: value }, refetchQueries: [{ query: GET_DB_MAP }] })
+		// let transaction = new UpdateListField_Transaction(_id, field, prev, value, UpdateTodolistField);
+		// props.tps.addTransaction(transaction);
+		// tpsRedo();
 
 	};
 

@@ -23,6 +23,7 @@ const typeDefs = gql `
         addSubregion(subregion: SubregionInput!, _id: String!, index: Int!): String
         addMaplist(map: MapInput!): Map
         deleteMap(_id: String!): Boolean
+        updateMapField(_id: String!, field: String!, value: String!): String
     }
     input MapInput {
         _id: String!
