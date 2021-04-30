@@ -213,6 +213,7 @@ html {
 
 .list-item-edit-input {
     padding: 23px 24px 24px 24px !important;
+    color: black !important
 }
 
 .table-input, .table-select {
@@ -264,6 +265,11 @@ html {
     width: 480px;
     height: 100%;
     margin: 0px;
+    
+}
+
+.centerMapSideList{
+    background-color: rgb(238, 212, 212) !important;
 }
 
 .centerMapMain{

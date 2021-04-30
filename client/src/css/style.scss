@@ -82,9 +82,14 @@ html, body {
 }
 
 .list-item {
+    color: black;
     cursor: pointer;
     transition: 0.05s ease-in-out;
 
+}
+
+.mapIcon{
+    background-color: rgb(238, 212, 212);
 }
 .list-item:hover {
     background-color: var(--warm-white-transparent);

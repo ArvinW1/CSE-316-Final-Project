@@ -110,6 +110,7 @@ function Homescreen(props) {
 	const [AddTodolist] = useMutation(mutations.ADD_TODOLIST);
 	const [DeleteTodolist] = useMutation(mutations.DELETE_TODOLIST);
 	const [AddMapList] = useMutation(mutations.ADD_MAPLIST);
+	const [DeleteMap] = useMutation(mutations.DELETE_MAP);
 
 
 	const tpsUndo = async () => {
@@ -209,10 +210,16 @@ function Homescreen(props) {
 			loadTodoList(data.addMaplist);
 		}
 	}
-	const deleteList = async (_id) => {
-		DeleteTodolist({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_MAP }] });
-		loadTodoList({});
-	};
+	
+	// const deleteList = async (_id) => {
+	// 	DeleteTodolist({ variables: { _id: _id }, refetchQueries: [{ query: GET_DB_MAP }] });
+	// 	loadTodoList({});
+	// };
+
+	const deleteMap = async (_id) => {
+		DeleteMap({variables: {_id: _id}, refetchQueries: [{query: GET_DB_MAP}] });
+		setActiveList({})
+	}
 
 	const updateListField = async (_id, field, value, prev) => {
 		let transaction = new UpdateListField_Transaction(_id, field, prev, value, UpdateTodolistField);
@@ -240,7 +247,8 @@ function Homescreen(props) {
 		toggleShowCreate(!showCreate);
 	};
 
-	const setShowDelete = () => {
+	const setShowDelete = (list) => {
+		setActiveList(list)
 		toggleShowCreate(false);
 		toggleShowLogin(false);
 		toggleShowUpdate(false);
@@ -330,8 +338,8 @@ function Homescreen(props) {
 			{
 				auth && <WLayout wLayout="header-lside" id="centerMap">
 					<WLHeader className="centerMapHeader"> Your Maps </WLHeader>
-					<WLSide className="centerMapSide">
-						<WSidebar> <SidebarList listIDs={SidebarData} handleSetActive={handleSetActive} activeid={activeList._id} updateListField={updateListField} ></SidebarList>
+					<WLSide className="centerMapSide" > 
+						<WSidebar className = "centerMapSideList"> <SidebarList listIDs={SidebarData} updateListField={updateListField} setShowDelete = {setShowDelete}></SidebarList>
 						</WSidebar> </WLSide>
 					<WLMain className="centerMapMain">
 						<WCard wLayout="content-footer" className="box">
@@ -342,7 +350,7 @@ function Homescreen(props) {
 			}
 
 			{
-				showDelete && (<Delete deleteList={deleteList} activeid={activeList._id} setShowDelete={setShowDelete} />)
+				showDelete && (<Delete deleteMap={deleteMap} activeid={activeList._id} setShowDelete={setShowDelete} />)
 			}
 
 			{

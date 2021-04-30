@@ -1,5 +1,9 @@
-import React, { useState }  from 'react';
+import React, { useState } from 'react';
 import { WNavItem, WInput } from 'wt-frontend';
+import { withRouter } from 'react-router-dom';
+import WButton from 'wt-frontend/build/components/wbutton/WButton';
+import WRow from 'wt-frontend/build/components/wgrid/WRow';
+import WCol from 'wt-frontend/build/components/wgrid/WCol';
 
 const SidebarEntry = (props) => {
     const [editing, toggleEditing] = useState(false);
@@ -16,24 +20,39 @@ const SidebarEntry = (props) => {
         props.updateListField(props._id, name, value, preEdit);
     };
 
-    const entryStyle = props._id === props.activeid ? 'list-item-active' : 'list-item ';
-    
+
     return (
-        <WNavItem 
-            className={entryStyle} onDoubleClick={handleEditing} 
-            onClick={() => { props.handleSetActive(props._id) }} 
-        >
-            {
-                editing ?   <WInput className="list-item-edit" inputClass="list-item-edit-input"
-                                onKeyDown={(e) => {if(e.keyCode === 13) handleSubmit(e)}}
-                                name='name' onBlur={handleSubmit} autoFocus={true} defaultValue={props.name} 
+        <>
+            <WRow>
+                <WCol size="10">
+                    <WNavItem
+                        className={"list-item"}
+                        onClick={() => { props.history.push("/regionviewer/" + props._id) }}
+                    >
+                        {
+                            editing ? <WInput className="list-item-edit" inputClass="list-item-edit-input"
+                                onKeyDown={(e) => { if (e.keyCode === 13) handleSubmit(e) }}
+                                name='name' onBlur={handleSubmit} autoFocus={true} defaultValue={props.name}
                             />
-                        :   <div className='list-text'>
-                                {props.name}
-                            </div>
-            }
-        </WNavItem>
+                                : <div className='list-text'>
+                                    {props.name}
+                                </div>
+                        }
+                    </WNavItem>
+                </WCol>
+                <WCol size="1">
+                    <WNavItem >
+                        <WButton className = "mapIcon" onClick = {handleEditing}> <i className="material-icons">edit</i></WButton>
+                    </WNavItem>
+                </WCol>
+                <WCol size="1">
+                    <WNavItem >
+                        <WButton className = "mapIcon" onClick = {() => props.setShowDelete(props.list)}> <i className="material-icons">delete</i></WButton>
+                    </WNavItem>
+                </WCol>
+            </WRow>
+        </>
     );
 };
 
-export default SidebarEntry;
+export default withRouter(SidebarEntry);

@@ -136,7 +136,11 @@ export const ADD_MAPLIST = gql`
 			}
 		}
 `;
-
+export const DELETE_MAP = gql`
+		mutation DeleteMap($_id: String!){
+			deleteMap(_id: $_id)
+		}
+`;
 export const DELETE_TODOLIST = gql`
 	mutation DeleteTodolist($_id: String!) {
 		deleteTodolist(_id: $_id)

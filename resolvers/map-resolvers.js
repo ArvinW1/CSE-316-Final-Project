@@ -49,6 +49,17 @@ module.exports = {
 				console.log(newMap)
 				return newMap;
 			}
+        },
+        /**
+         * @param {*} args a Map ObjectID
+         * @returns {boolean} true on successful delete, false on failure
+         */
+        deleteMap: async (_, args) => {
+            const {_id} = args;
+            const objectId = new ObjectId(_id);
+            const deleted = await Map.deleteOne({_id: objectId});
+            if (deleted) return true;
+            else return false;
         }
     }
 }
