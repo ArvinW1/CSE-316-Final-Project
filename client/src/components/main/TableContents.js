@@ -3,7 +3,7 @@ import TableEntry   from './TableEntry';
 
 const TableContents = (props) => {
 
-    let entries = props.activeList ? props.activeList.items : null;
+    let entries = props.activeList ? props.activeList.subregions : null;
     let entryCount = 0;
     if(entries) {
         entries = entries.filter(entry => entry !== null);
@@ -25,7 +25,7 @@ const TableContents = (props) => {
             </div>
             : <div className='container-primary' >
                 {
-                    props.activeList._id ? <h2 className="nothing-msg"> Nothing to do!</h2> : <></> 
+                    props.activeList._id ? <h2 className="nothing-msg"> No Subregions Currently!</h2> : <></> 
                 }               
                 
             </div>

@@ -1,12 +1,13 @@
-import React 			from 'react';
+import React, { useState } 			from 'react';
 import Homescreen 		from './components/homescreen/Homescreen';
 import { useQuery } 	from '@apollo/client';
 import * as queries 	from './cache/queries';
 import { jsTPS } 		from './utils/jsTPS';
 import { BrowserRouter, Switch, Route, Redirect, withRouter } from 'react-router-dom';
-import Regionviewer from './components/subregion/Regionviewer';
+import Spreadsheet from './components/subregion/Spreadsheet';
  
 const App = () => {
+	const [activeList, setActiveList] = useState({});
 	let user = null;
     let transactionStack = new jsTPS();
 	let refreshTps = false;
@@ -26,13 +27,10 @@ const App = () => {
 					path="/home" 
 					name="home" 
 					render={() => 
-						<Homescreen tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/>
+						<Homescreen tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps} setActiveList = {setActiveList}/>
 					} 
 				/>
-				<Route path = "/newpage" >
-					<Homescreen tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/> 
-				</Route>
-				<Route path = "/regionviewer/:_id"> <Regionviewer tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/>  </Route>
+				<Route path = "/spreadsheet/:_id"> <Spreadsheet tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/>  </Route>
 			</Switch>
 		</BrowserRouter>
 	);

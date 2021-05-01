@@ -1,21 +1,50 @@
-import React, { useState } 			from 'react';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { WLayout, WLHeader} from 'wt-frontend';
+import { WLayout, WLHeader } from 'wt-frontend';
 import { WNavbar, WNavItem } from 'wt-frontend';
 import NavbarOptions from '../navbar/NavbarOptions';
 import UpdateAccount from '../modals/UpdateAccount';
 import Logo from '../navbar/Logo';
+import { useQuery } from '@apollo/client';
+import { GET_DB_MAP } from '../../cache/queries';
+import WLMain from 'wt-frontend/build/components/wmodal/WMMain';
+import MainContents from '../main/MainContents';
 
-function Regionviewer(props){
-    const [showDelete, toggleShowDelete] = useState(false);
+function Spreadsheet(props) {
+	const [showDelete, toggleShowDelete] = useState(false);
 	const [showLogin, toggleShowLogin] = useState(false);
 	const [showCreate, toggleShowCreate] = useState(false);
 	const [showUpdate, toggleShowUpdate] = useState(false);
-    const [activeList, setActiveList] = useState({});
+	const [activeList, setActiveList] = useState({})
 
-    const auth = props.user === null ? false : true;
+	let maps = [];
 
-    const setShowLogin = () => {
+
+	const { loading, error, data, refetch } = useQuery(GET_DB_MAP)
+
+	if (loading) { console.log(loading, 'loading'); }
+	if (error) { console.log(error, 'error'); }
+	if (data) {
+		// Assign todolists 
+		for (let map of data.getAllMaps) {
+			maps.push(map)
+		}
+		if(!activeList._id){
+			const currentList = maps.find(map => map._id === props.match.params._id)
+			setActiveList(currentList)
+		}
+	}
+	 //See if it is subregion by checking if currentlist is null/undefined
+	
+
+	const auth = props.user === null ? false : true;
+
+	const loadMap = (list) => {
+		props.tps.clearAllTransactions();
+		setActiveList(list);
+	}
+
+	const setShowLogin = () => {
 		toggleShowDelete(false);
 		toggleShowCreate(false);
 		toggleShowUpdate(false);
@@ -29,8 +58,7 @@ function Regionviewer(props){
 		toggleShowCreate(!showCreate);
 	};
 
-	const setShowDelete = (list) => {
-		setActiveList(list)
+	const setShowDelete = () => {
 		toggleShowCreate(false);
 		toggleShowLogin(false);
 		toggleShowUpdate(false);
@@ -43,7 +71,7 @@ function Regionviewer(props){
 		toggleShowDelete(false);
 		toggleShowUpdate(!showUpdate)
 	}
-    
+
 	return (
 		<WLayout wLayout="header">
 			<WLHeader>
@@ -57,18 +85,20 @@ function Regionviewer(props){
 						<NavbarOptions
 							fetchUser={props.fetchUser} auth={auth}
 							setShowCreate={setShowCreate} setShowLogin={setShowLogin}
-							user={props.user} setShowUpdate={setShowUpdate}
+							user={props.user} setShowUpdate={setShowUpdate} setActiveList={loadMap}
 						/>
 					</ul>
 				</WNavbar>
 			</WLHeader>
 
-            {
+			<WLMain> <MainContents activeList = {activeList} /> </WLMain>
+
+			{
 				showUpdate && (<UpdateAccount user={props.user} fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} />)
 			}
 
-            </WLayout>
-            )
+		</WLayout>
+	)
 
 }
-export default withRouter(Regionviewer);
+export default withRouter(Spreadsheet);

@@ -20,6 +20,11 @@ const SidebarEntry = (props) => {
         props.updateListField(props._id, name, value, preEdit);
     };
 
+    const showSubregion = () =>{
+        props.history.push("/Spreadsheet/" + props._id);
+        props.setActiveList(props.list);
+    }
+
 
     return (
         <>
@@ -27,7 +32,7 @@ const SidebarEntry = (props) => {
                 <WCol size="10">
                     <WNavItem
                         className={"list-item"}
-                        onClick={() => { props.history.push("/regionviewer/" + props._id) }}
+                        onClick={showSubregion}
                     >
                         {
                             editing ? <WInput className="list-item-edit" inputClass="list-item-edit-input"

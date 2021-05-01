@@ -71,7 +71,7 @@ function Homescreen(props) {
 		// create data for sidebar links
 		for (let map of maps) {
 			if (map) {
-				SidebarData.push({ _id: map._id, name: map.name });
+				SidebarData.push({ _id: map._id, name: map.name, subregions: map.subregions});
 			}
 		}
 	}
@@ -341,7 +341,7 @@ function Homescreen(props) {
 				auth && <WLayout wLayout="header-lside" id="centerMap">
 					<WLHeader className="centerMapHeader"> Your Maps </WLHeader>
 					<WLSide className="centerMapSide" > 
-						<WSidebar className = "centerMapSideList"> <SidebarList listIDs={SidebarData} updateListField={updateListField} setShowDelete = {setShowDelete}></SidebarList>
+						<WSidebar className = "centerMapSideList"> <SidebarList listIDs={SidebarData} updateListField={updateListField} setShowDelete = {setShowDelete} setActiveList = {props.setActiveList}></SidebarList>
 						</WSidebar> </WLSide>
 					<WLMain className="centerMapMain">
 						<WCard wLayout="content-footer" className="box">

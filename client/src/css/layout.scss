@@ -97,6 +97,8 @@ html {
     padding: 0;
     padding-top: 24px;
     padding-bottom: 12px;
+    text-align: center;
+    display: block !important;
 }
 
 .table-header-button {
@@ -286,4 +288,10 @@ html {
     text-align: center;
     background-color: red;
     font-weight: bold;
+}
+.spreadsheetName{
+    margin: auto;
+    color: white;
+    font-weight: bold;
+    font-size: x-large;
 }
