@@ -39,7 +39,11 @@ export const GET_DB_MAP = gql`
         	leader
         	parent
 			owner
-			landmarks
+			landmarks{
+				_id
+				name
+				location
+			}
 			subregions
 		}
 	}

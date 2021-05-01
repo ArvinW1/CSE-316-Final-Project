@@ -6,7 +6,7 @@ import SpreadsheetHeader from './SpreadsheetHeader';
 const MainContents = (props) => {
     return (
         <div className='table ' >
-            <SpreadsheetHeader activeList={props.activeList}/>
+            <SpreadsheetHeader activeList={props.activeList} addNewSubregion = {props.addNewSubregion}/>
             <TableHeader
                 // disabled={!props.activeList._id}        addItem={props.addItem}
                 // undo={props.undo} redo={props.redo}     canUndo={props.canUndo} 
@@ -16,7 +16,7 @@ const MainContents = (props) => {
             <TableContents
                 key={props.activeList._id}      activeList={props.activeList}
                 deleteItem={props.deleteItem}   //reorderItem={props.reorderItem}
-                //editItem={props.editItem}
+                currentRegions = {props.currentRegions} //editItem={props.editItem} 
             />
         </div>
     );

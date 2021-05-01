@@ -3,11 +3,7 @@ import TableEntry   from './TableEntry';
 
 const TableContents = (props) => {
 
-    let entries = props.activeList ? props.activeList.subregions : null;
-    let entryCount = 0;
-    if(entries) {
-        entries = entries.filter(entry => entry !== null);
-    } 
+    let entries = props.activeList ? props.currentRegions : null;
     
     return (
         entries !== undefined && entries.length > 0 ? <div className=' table-entries container-primary'>

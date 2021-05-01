@@ -8,8 +8,13 @@ const typeDefs = gql `
         leader: String!
         parent: String!
         owner: String!
-        landmarks: [String!]
-        subregions: [String!]
+        landmarks: [Landmark]
+        subregions: [String]
+    }
+    type Landmark{
+        _id: String!
+        name: String!
+        location: String!
     }
     extend type Query {
 		getAllMaps: [Map]
@@ -27,8 +32,13 @@ const typeDefs = gql `
         leader: String!
         parent: String!
         owner: String!
-        landmarks: [String!]
-        subregions: [String!]
+        landmarks: [LandmarkInput]
+        subregions: [String]
+    }
+    input LandmarkInput{
+        _id: String!
+        name: String!
+        location: String!
     }
 `;
 module.exports = { typeDefs: typeDefs }

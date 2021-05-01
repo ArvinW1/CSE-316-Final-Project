@@ -126,7 +126,11 @@ export const ADD_MAPLIST = gql`
 				owner
 				capital
         		leader
-        		landmarks
+        		landmarks{
+					_id
+					name
+					location
+				}
         		parent
 				subregions
 			}

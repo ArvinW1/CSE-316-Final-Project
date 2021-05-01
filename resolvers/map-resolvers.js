@@ -24,11 +24,23 @@ module.exports = {
             const found = await Map.findOne({_id: mapId});
             if(!found) return ('Map not found');
             if(subregion._id === '') subregion._id = objectId;
+            const newMap = new Map({
+                _id: subregion._id,
+				name: subregion.name,
+                parent: subregion.parent,
+                capital: subregion.capital,
+                leader: subregion.leader,
+				owner: subregion.owner,
+                landmarks: subregion.landmarks,
+				subregions: subregion.subregions,
+            })
+            console.log(newMap)
             let mapSubregions = found.subregions;
 			if(index < 0) mapSubregions.push(subregion._id);
 			else mapSubregions.splice(index, 0, subregion._id);
 
             const updated = await Map.updateOne({_id: mapId}, {subregions: mapSubregions})
+            const saved = await newMap.save();
 
             if(updated) return (subregion._id)
 			else return ('Could not add item');

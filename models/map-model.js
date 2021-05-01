@@ -27,8 +27,8 @@ const mapSchema = new Schema(
 			type: String,
 			required: true
 		},
-		landmarks: [String],
-        subregions: [ObjectId]
+		landmarks: [Landmark],
+        subregions: [String]
 	},
 	{ timestamps: true }
 );
