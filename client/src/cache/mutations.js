@@ -46,7 +46,7 @@ export const ADD_ITEM = gql`
 `;
 
 export const ADD_SUBREGION = gql`
-	mutation AddSubregion($subregion: SubregionInput!, $_id: String!, $index: Int!){
+	mutation AddSubregion($subregion: MapInput!, $_id: String!, $index: Int!){
 		addSubregion(subregion: $subregion, _id: $_id, index: $index)
 	}
 `;

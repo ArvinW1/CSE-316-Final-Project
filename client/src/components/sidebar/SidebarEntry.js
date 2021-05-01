@@ -22,7 +22,6 @@ const SidebarEntry = (props) => {
 
     const showSubregion = () =>{
         props.history.push("/Spreadsheet/" + props._id);
-        props.setActiveList(props.list);
     }
 
 

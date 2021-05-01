@@ -4,7 +4,7 @@ import { WButton, WNavItem } from 'wt-frontend';
 
 const Logo = (props) => {
     const goHome = () =>{
-        props.history.push("/")
+        props.history.push("/home")
     }
     return (
         <WNavItem hoverAnimation="lighten">

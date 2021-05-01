@@ -59,7 +59,9 @@ function Homescreen(props) {
 	if (data) {
 		// Assign todolists 
 		for (let map of data.getAllMaps) {
-			maps.push(map)
+			if(map.parent === 'Untitled'){
+				maps.push(map)
+			}
 		}
 		console.log(maps)
 		// if a list is selected, shift it to front of todolists
@@ -130,40 +132,40 @@ function Homescreen(props) {
 		}
 	}
 
-	const addItem = async () => {
-		let list = activeList;
-		const items = list.items;
-		const newItem = { // <redirect to: /home/event.target._id/>
-			_id: '',// /home/:_id
-			description: 'No Description',
-			due_date: 'No Date',
-			assigned_to: 'No One',
-			completed: false
-		};
-		let opcode = 1;
-		let itemID = newItem._id;
-		let listID = activeList._id;
-		let transaction = new UpdateListItems_Transaction(listID, itemID, newItem, opcode, AddTodoItem, DeleteTodoItem);
-		props.tps.addTransaction(transaction);
-		tpsRedo();
-	};
+	// const addItem = async () => {
+	// 	let list = activeList;
+	// 	const items = list.items;
+	// 	const newItem = { // <redirect to: /home/event.target._id/>
+	// 		_id: '',// /home/:_id
+	// 		description: 'No Description',
+	// 		due_date: 'No Date',
+	// 		assigned_to: 'No One',
+	// 		completed: false
+	// 	};
+	// 	let opcode = 1;
+	// 	let itemID = newItem._id;
+	// 	let listID = activeList._id;
+	// 	let transaction = new UpdateListItems_Transaction(listID, itemID, newItem, opcode, AddTodoItem, DeleteTodoItem);
+	// 	props.tps.addTransaction(transaction);
+	// 	tpsRedo();
+	// };
 
-	const deleteItem = async (item, index) => {
-		let listID = activeList._id;
-		let itemID = item._id;
-		let opcode = 0;
-		let itemToDelete = {
-			_id: item._id,
-			description: item.description,
-			due_date: item.due_date,
-			assigned_to: item.assigned_to,
-			completed: item.completed
-		}
-		let transaction = new UpdateListItems_Transaction(listID, itemID, itemToDelete, opcode, AddTodoItem, DeleteTodoItem, index);
-		props.tps.addTransaction(transaction);
-		tpsRedo();
+	// const deleteItem = async (item, index) => {
+	// 	let listID = activeList._id;
+	// 	let itemID = item._id;
+	// 	let opcode = 0;
+	// 	let itemToDelete = {
+	// 		_id: item._id,
+	// 		description: item.description,
+	// 		due_date: item.due_date,
+	// 		assigned_to: item.assigned_to,
+	// 		completed: item.completed
+	// 	}
+	// 	let transaction = new UpdateListItems_Transaction(listID, itemID, itemToDelete, opcode, AddTodoItem, DeleteTodoItem, index);
+	// 	props.tps.addTransaction(transaction);
+	// 	tpsRedo();
 
-	};
+	// };
 
 	const editItem = async (itemID, field, value, prev) => {
 		let flag = 0;
@@ -203,7 +205,11 @@ function Homescreen(props) {
 		let map = {
 			_id: '',
 			name: 'Untitled',
+			parent: 'Untitled',
+			capital: 'Untitled',
+			leader: 'Untitled',
 			owner: props.user._id,
+			landmarks: [],
 			subregions: [],
 		}
 		const { data } = await AddMapList({ variables: { map: map }, refetchQueries: [{ query: GET_DB_MAP }] });
@@ -341,7 +347,7 @@ function Homescreen(props) {
 				auth && <WLayout wLayout="header-lside" id="centerMap">
 					<WLHeader className="centerMapHeader"> Your Maps </WLHeader>
 					<WLSide className="centerMapSide" > 
-						<WSidebar className = "centerMapSideList"> <SidebarList listIDs={SidebarData} updateListField={updateListField} setShowDelete = {setShowDelete} setActiveList = {props.setActiveList}></SidebarList>
+						<WSidebar className = "centerMapSideList"> <SidebarList listIDs={SidebarData} updateListField={updateListField} setShowDelete = {setShowDelete}></SidebarList>
 						</WSidebar> </WLSide>
 					<WLMain className="centerMapMain">
 						<WCard wLayout="content-footer" className="box">

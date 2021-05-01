@@ -7,7 +7,6 @@ import { BrowserRouter, Switch, Route, Redirect, withRouter } from 'react-router
 import Spreadsheet from './components/subregion/Spreadsheet';
  
 const App = () => {
-	const [activeList, setActiveList] = useState({});
 	let user = null;
     let transactionStack = new jsTPS();
 	let refreshTps = false;
@@ -27,7 +26,7 @@ const App = () => {
 					path="/home" 
 					name="home" 
 					render={() => 
-						<Homescreen tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps} setActiveList = {setActiveList}/>
+						<Homescreen tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/>
 					} 
 				/>
 				<Route path = "/spreadsheet/:_id"> <Spreadsheet tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/>  </Route>

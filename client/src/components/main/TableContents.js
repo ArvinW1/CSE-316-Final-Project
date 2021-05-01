@@ -7,7 +7,6 @@ const TableContents = (props) => {
     let entryCount = 0;
     if(entries) {
         entries = entries.filter(entry => entry !== null);
-        entryCount = entries.length
     } 
     
     return (
@@ -15,7 +14,7 @@ const TableContents = (props) => {
             {
                 entries.map((entry, index) => (
                     <TableEntry
-                        data={entry} key={entry._id} index={index} entryCount={entryCount}
+                        data={entry} key={entry._id} index={index}
                         deleteItem={props.deleteItem} reorderItem={props.reorderItem}
                         editItem={props.editItem}
                     />

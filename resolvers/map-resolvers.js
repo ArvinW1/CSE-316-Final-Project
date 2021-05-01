@@ -1,6 +1,5 @@
 const ObjectId = require('mongoose').Types.ObjectId;
 const Map = require('../models/map-model');
-const Subregion = require('../models/subregion-model');
 
 module.exports = {
     Query: {
@@ -26,11 +25,10 @@ module.exports = {
             if(!found) return ('Map not found');
             if(subregion._id === '') subregion._id = objectId;
             let mapSubregions = found.subregions;
-			if(index < 0) mapSubregions.push(item);
-			else mapSubregions.splice(index, 0, item);
+			if(index < 0) mapSubregions.push(subregion._id);
+			else mapSubregions.splice(index, 0, subregion._id);
 
             const updated = await Map.updateOne({_id: mapId}, {subregions: mapSubregions})
-            const saved = await subregion.save();
 
             if(updated) return (subregion._id)
 			else return ('Could not add item');

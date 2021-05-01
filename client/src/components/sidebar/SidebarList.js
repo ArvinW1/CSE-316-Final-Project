@@ -13,7 +13,6 @@ const SidebarList = (props) => {
                         setShowDelete = {props.setShowDelete}
                         id={tempID++} key={entry._id+props.activeid} name={entry.name} _id={entry._id}
                         updateListField={props.updateListField}
-                        setActiveList = {props.setActiveList}
                     />
                 ))
             }
