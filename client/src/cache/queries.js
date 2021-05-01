@@ -35,16 +35,12 @@ export const GET_DB_MAP = gql`
 		getAllMaps {
 			_id
 			name
+			capital
+        	leader
+        	parent
 			owner
-			subregions{
-				_id
-				name
-        		capital
-        		leader
-        		landmarks
-        		parent
-        		subregions
-			}
+			landmarks
+			subregions
 		}
 	}
 `;

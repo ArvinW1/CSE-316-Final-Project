@@ -1,5 +1,6 @@
 const ObjectId = require('mongoose').Types.ObjectId;
 const Map = require('../models/map-model');
+const Subregion = require('../models/subregion-model');
 
 module.exports = {
     Query: {
@@ -21,8 +22,8 @@ module.exports = {
             const { _id, subregion , index } = args;
             const mapId = new ObjectId(_id);
             const objectId = new ObjectId();
-            const found = await Todolist.findOne({_id: mapId});
-            if(!found) return ('Todolist not found');
+            const found = await Map.findOne({_id: mapId});
+            if(!found) return ('Map not found');
             if(subregion._id === '') subregion._id = objectId;
             let mapSubregions = found.subregions;
 			if(index < 0) mapSubregions.push(item);
@@ -37,11 +38,15 @@ module.exports = {
         addMaplist: async (_, args) => {
             const { map } = args;
             const objectId = new ObjectId();
-            const { name, owner, subregions} = map;
+            const { name, owner, parent, capital, leader, landmarks, subregions} = map;
             const newMap = new Map({
                 _id: objectId,
 				name: name,
+                parent: parent,
+                capital: capital,
+                leader: leader,
 				owner: owner,
+                landmarks: landmarks,
 				subregions: subregions,
             });
             const updated = await newMap.save();

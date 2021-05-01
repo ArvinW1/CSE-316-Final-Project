@@ -1,6 +1,5 @@
 const { model, Schema, ObjectId } = require('mongoose');
 const Landmark = require('./landmark-model').schema;
-const Subregion = require('./subregion-model').schema;
 
 const mapSchema = new Schema(
 	{
@@ -12,11 +11,24 @@ const mapSchema = new Schema(
 			type: String,
 			required: true
 		},
+		capital: {
+			type: String,
+			required: true
+		},
+		leader: {
+			type: String,
+			required: true
+		},
+		parent: {
+			type: String,
+			required: true
+		},
 		owner: {
 			type: String,
 			required: true
 		},
-        subregions: [Subregion]
+		landmarks: [String],
+        subregions: [ObjectId]
 	},
 	{ timestamps: true }
 );
