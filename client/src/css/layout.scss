@@ -273,7 +273,7 @@ html {
 }
 
 .centerMapSideList{
-    background-color: rgb(238, 212, 212) !important;
+    background-color: rgb(238, 209, 209) !important;
 }
 
 .centerMapMain{
@@ -328,4 +328,12 @@ html {
 }
 .subregion-content-header{
     background-color: rgb(184, 13, 13);
+}
+
+.regionviewer-columns{
+    grid-template-columns: 50% 50%;
+}
+
+.regionviewer-lside{
+    
 }

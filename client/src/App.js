@@ -5,6 +5,7 @@ import * as queries 	from './cache/queries';
 import { jsTPS } 		from './utils/jsTPS';
 import { BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
 import Spreadsheet from './components/subregion/Spreadsheet';
+import Regionviewer from './components/regionviewer.js/regionviewer';
  
 const App = () => {
 	let user = null;
@@ -31,6 +32,8 @@ const App = () => {
 				/>
 				<Route path = "/spreadsheet/:_id" render = {() =>
 				<Spreadsheet tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps} key = {Date.now()} /> } />
+				<Route path = "/regionviewer/:_id" render = {() =>
+				<Regionviewer tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps} key = {Date.now()} /> } />
 			</Switch>
 		</BrowserRouter>
 	);

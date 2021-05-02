@@ -120,7 +120,7 @@ const TableEntry = (props) => {
             </WCol>
 
             <WCol size="3">
-                <div className={`table-text`} onClick = {() => props.history.push("/Regionviewer" + data._id)}>
+                <div className={`table-text`} onClick = {() => props.history.push("/Regionviewer/" + data._id)}>
                     {landmarks}
                 </div>
             </WCol>
