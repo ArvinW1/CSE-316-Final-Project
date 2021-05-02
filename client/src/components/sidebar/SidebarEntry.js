@@ -31,14 +31,13 @@ const SidebarEntry = (props) => {
                 <WCol size="10">
                     <WNavItem
                         className={"list-item"}
-                        onClick={showSubregion}
                     >
                         {
                             editing ? <WInput className="list-item-edit" inputClass="list-item-edit-input"
                                 onKeyDown={(e) => { if (e.keyCode === 13) handleSubmit(e) }}
                                 name='name' onBlur={handleSubmit} autoFocus={true} defaultValue={props.name}
                             />
-                                : <div className='list-text'>
+                                : <div className='list-text' onClick={showSubregion}>
                                     {props.name}
                                 </div>
                         }
