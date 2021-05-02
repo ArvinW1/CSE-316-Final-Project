@@ -10,9 +10,11 @@ const SpreadsheetHeader = (props) => {
             <WRow>
                 <WCol size={"1"}></WCol>
                 <WCol size={"4"}>
-                    <WButton onClick = {props.addNewSubregion}> <i className="material-icons">add</i></WButton>
-                    <WButton> <i className="material-icons">undo</i></WButton>
-                    <WButton> <i className="material-icons">redo</i></WButton>
+                    <WButton onClick = {props.addNewSubregion} className = {"subregion-button"}> 
+                    <i className="material-icons">add</i>
+                    </WButton>
+                    <WButton className = {"subregion-button"}> <i className="material-icons">undo</i></WButton>
+                    <WButton className = {"subregion-button"}> <i className="material-icons">redo</i></WButton>
                 </WCol>
                 <WCol size={"7"}>
                     <div className={'spreadsheetName'}> {regionName} </div>
