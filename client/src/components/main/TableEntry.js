@@ -9,7 +9,7 @@ const TableEntry = (props) => {
     const name = data.name;
     const capital = data.capital;
     const leader = data.leader
-    const landmarks = data.landmarks
+    const landmarks = data.landmarks.length === 0  ?  "No Landmarks" : data.landmarks;
 
     const [editingDate, toggleDateEdit] = useState(false);
     const [editingDescr, toggleDescrEdit] = useState(false);
@@ -120,7 +120,7 @@ const TableEntry = (props) => {
             </WCol>
 
             <WCol size="3">
-                <div className={`table-text`}>
+                <div className={`table-text`} onClick = {() => props.history.push("/Regionviewer" + data._id)}>
                     {landmarks}
                 </div>
             </WCol>
