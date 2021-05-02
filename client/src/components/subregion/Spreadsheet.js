@@ -32,7 +32,9 @@ function Spreadsheet(props) {
 			maps.push(map)
 		}
 		if(!activeList._id){
+			console.log(props.match.params._id)
 			const currentList = maps.find(map => map._id === props.match.params._id)
+			console.log("reload")
 			setActiveList(currentList)
 			if(currentList.subregions){
 				let currentsub = []
@@ -50,9 +52,18 @@ function Spreadsheet(props) {
 
 	const reloadList = async () => {
 		if (activeList._id) {
-			let tempID = activeList._id;
+			let tempID = props.match.params._id;
 			let map = maps.find(map => map._id === tempID);
 			setActiveList(map);
+			console.log(map)
+			if(map.subregions){
+				let currentsub = []
+				for(let sub of map.subregions){
+					let children = maps.find(map => map._id === sub)
+					currentsub.push(children)
+				}
+				SetCurrentRegions(currentsub)
+			}
 		}
 	}
 	const mutationOptions = {
@@ -130,7 +141,7 @@ function Spreadsheet(props) {
 				</WNavbar>
 			</WLHeader>
 
-			<WLMain> <MainContents activeList = {activeList} addNewSubregion = {addSubregion} currentRegions = {currentRegions}/> </WLMain>
+			<WLMain> <MainContents activeList = {activeList} addNewSubregion = {addSubregion} currentRegions = {currentRegions} reloadList = {reloadList}/> </WLMain>
 
 			{
 				showUpdate && (<UpdateAccount user={props.user} fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} />)

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import { WButton, WInput, WRow, WCol } from 'wt-frontend';
 
 const TableEntry = (props) => {
     const { data } = props;
-    console.log(data)
 
 
     const name = data.name;
@@ -54,6 +54,9 @@ const TableEntry = (props) => {
     //         props.editItem(data._id, 'assigned_to', newAssigned, prevAssigned);
     //     }
     }
+    const MoveToNewSub = () =>{
+        props.history.push("/Spreadsheet/" + data._id)
+    }
 
     return (
         <WRow className='table-entry'>
@@ -66,7 +69,7 @@ const TableEntry = (props) => {
                             autoFocus={true}  type='text'
                             inputClass="table-input-class"
                         />
-                        : <div className="table-text">
+                        : <div className="table-text" onClick = {MoveToNewSub}>
                             {name}
                         </div>
                 }
@@ -125,4 +128,4 @@ const TableEntry = (props) => {
     );
 };
 
-export default TableEntry;
+export default withRouter(TableEntry);
