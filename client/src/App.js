@@ -29,7 +29,8 @@ const App = () => {
 						<Homescreen tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/>
 					} 
 				/>
-				<Route path = "/spreadsheet/:_id"> <Spreadsheet tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps}/>  </Route>
+				<Route path = "/spreadsheet/:_id" render = {() =>
+				<Spreadsheet tps={transactionStack} fetchUser={refetch} user={user} refreshTps={refreshTps} key = {Date.now()} /> } />
 			</Switch>
 		</BrowserRouter>
 	);

@@ -236,6 +236,7 @@ html {
     width: 35%;
     height: 70%;
     padding: 10px;
+    background-color: transparent;
 }
 
 .centerWord{
@@ -243,8 +244,8 @@ html {
     text-align: center;
     color: red;
     width: 45%;
-    padding-top: 100px; 
     font-weight: bold;
+    padding-top: 50px;
     font-size: 150%;
 }
 
@@ -296,4 +297,10 @@ html {
     font-weight: bold;
     font-size: x-large;
     padding-left: 60px;
+}
+.homeMap{
+    margin: auto;
+}
+.preLogGlobal{
+    max-width: 100%;
 }

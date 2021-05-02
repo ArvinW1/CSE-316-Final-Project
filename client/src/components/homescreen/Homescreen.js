@@ -21,6 +21,9 @@ import {
 import { withRouter } from 'react-router-dom';
 import UpdateAccount from '../modals/UpdateAccount';
 import SidebarList from '../sidebar/SidebarList';
+import world from '../../Images/HomepageWorld.png'
+import HomeWorld from '../../Images/PrelogGlobal.png'
+import WCContent from 'wt-frontend/build/components/wcard/WCContent';
 
 function Homescreen(props) {
 
@@ -338,7 +341,7 @@ function Homescreen(props) {
 
 			</WLMain> */}
 			{
-				!auth && <WCard wLayout="content-footer" className="center">
+				!auth && <WCard wLayout="content-footer" className="center"><WCContent className = {"homeMap"}><img src={HomeWorld} alt="HomeWorld" className = {"preLogGlobal"}/> </WCContent>
 					<WCFooter className="centerWord">WELCOME TO THE WORLD DATA MAPPER</WCFooter>
 				</WCard>
 			}
@@ -351,6 +354,7 @@ function Homescreen(props) {
 						</WSidebar> </WLSide>
 					<WLMain className="centerMapMain">
 						<WCard wLayout="content-footer" className="box">
+							<WCContent className = {"homeMap"}><img src={world} alt="world" className = {"preLogGlobal"}/> </WCContent>
 							<WCFooter className="boxFooter"> <WButton color="danger" size="large" span="true" onClick={createNewMap}>Create A New Map </WButton></WCFooter>
 						</WCard>
 					</WLMain>
