@@ -24,8 +24,9 @@ const TableHeader = (props) => {
 
     return (
         <WRow className="table-header">
+            <WCol size = "1"></WCol>
 
-            <WCol size="4">
+            <WCol size="3">
                 <WButton className='table-header-section' wType="texted" >Name</WButton>
             </WCol>
             

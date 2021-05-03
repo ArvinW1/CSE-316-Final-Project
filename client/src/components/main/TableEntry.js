@@ -9,7 +9,7 @@ const TableEntry = (props) => {
     const name = data.name;
     const capital = data.capital;
     const leader = data.leader
-    const landmarks = data.landmarks.length === 0  ?  "No Landmarks" : data.landmarks;
+    const landmarks = data.landmarks.length === 0 ? "No Landmarks" : data.landmarks;
 
     const [editingDate, toggleDateEdit] = useState(false);
     const [editingDescr, toggleDescrEdit] = useState(false);
@@ -28,48 +28,51 @@ const TableEntry = (props) => {
 
     };
 
-     const handleDescrEdit = (e) => {
-    //     toggleDescrEdit(false);
-    //     const newDescr = e.target.value ? e.target.value : 'No Description';
-    //     const prevDescr = description;
-    //     if (newDescr !== prevDescr) {
-    //         props.editItem(data._id, 'description', newDescr, prevDescr);
-    //     }
-     };
+    const handleDescrEdit = (e) => {
+        //     toggleDescrEdit(false);
+        //     const newDescr = e.target.value ? e.target.value : 'No Description';
+        //     const prevDescr = description;
+        //     if (newDescr !== prevDescr) {
+        //         props.editItem(data._id, 'description', newDescr, prevDescr);
+        //     }
+    };
 
-     const handleStatusEdit = (e) => {
-    //     toggleStatusEdit(false);
-    //     const newStatus = e.target.value ? e.target.value : false;
-    //     const prevStatus = status;
-    //     if (newStatus !== prevStatus) {
-    //         props.editItem(data._id, 'completed', newStatus, prevStatus);
-    //     }
-     };
+    const handleStatusEdit = (e) => {
+        //     toggleStatusEdit(false);
+        //     const newStatus = e.target.value ? e.target.value : false;
+        //     const prevStatus = status;
+        //     if (newStatus !== prevStatus) {
+        //         props.editItem(data._id, 'completed', newStatus, prevStatus);
+        //     }
+    };
 
     const handleAssignEdit = (e) => {
-    //     toggleAssignEdit(false);
-    //     const newAssigned = e.target.value ? e.target.value : 'Myself';
-    //     const prevAssigned = assigned_to;
-    //     if (newAssigned !== prevAssigned) {
-    //         props.editItem(data._id, 'assigned_to', newAssigned, prevAssigned);
-    //     }
+        //     toggleAssignEdit(false);
+        //     const newAssigned = e.target.value ? e.target.value : 'Myself';
+        //     const prevAssigned = assigned_to;
+        //     if (newAssigned !== prevAssigned) {
+        //         props.editItem(data._id, 'assigned_to', newAssigned, prevAssigned);
+        //     }
     }
-    const MoveToNewSub = () =>{
+    const MoveToNewSub = () => {
         props.history.push("/Spreadsheet/" + data._id)
     }
 
     return (
         <WRow className='table-entry'>
-            <WCol size="4">
+            <WCol size="1">
+                <WButton className={"subregion-button"}> <i className="material-icons">delete</i></WButton>
+            </WCol>
+            <WCol size="3">
                 {
-                    editingDescr 
+                    editingDescr
                         ? <WInput
                             className='table-input' onBlur={handleDescrEdit}
                             onKeyDown={(e) => { if (e.keyCode === 13) handleDescrEdit(e) }}
-                            autoFocus={true}  type='text'
+                            autoFocus={true} type='text'
                             inputClass="table-input-class"
                         />
-                        : <div className="table-text" onClick = {MoveToNewSub}>
+                        : <div className="table-text" onClick={MoveToNewSub}>
                             {name}
                         </div>
                 }
@@ -79,7 +82,7 @@ const TableEntry = (props) => {
                 {
                     editingDate ? <WInput
                         className='table-input' onBlur={handleDateEdit}
-                        autoFocus={true}  type='date'
+                        autoFocus={true} type='date'
                         wtype="outlined" baranimation="solid" inputclass="table-input-class"
                     />
                         : <div className="table-text">
@@ -92,7 +95,7 @@ const TableEntry = (props) => {
                 {
                     editingStatus ? <select
                         className='table-select' onBlur={handleStatusEdit}
-                        autoFocus={true} 
+                        autoFocus={true}
                     >
                         <option value="complete">complete</option>
                         <option value="incomplete">incomplete</option>
@@ -114,13 +117,13 @@ const TableEntry = (props) => {
                             /*wType="outlined" barAnimation="solid" */ inputclass="table-input-class"
                         />
                         : <div className={`table-text`}>
-                            {}
+                            { }
                         </div>
                 }
             </WCol>
 
             <WCol size="3">
-                <div className={`table-text`} onClick = {() => props.history.push("/Regionviewer/" + data._id)}>
+                <div className={`table-text`} onClick={() => props.history.push("/Regionviewer/" + data._id)}>
                     {landmarks}
                 </div>
             </WCol>
