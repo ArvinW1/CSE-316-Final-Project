@@ -81,8 +81,8 @@ module.exports = {
 		 */
 		update: async (_, args, { res }) =>{
 			const {oldEmail, email, password, firstName, lastName } = args;
-			const alreadyRegistered = await User.findOne({email: oldEmail});
-			if(alreadyRegistered && alreadyRegistered.email !== email) {
+			const alreadyRegistered = await User.findOne({email: email});
+			if(alreadyRegistered && alreadyRegistered.email !== oldEmail) { //Checks if it is the current user
 				console.log('User with that email already registered.');
 				return(new User({
 					_id: '',
@@ -92,8 +92,8 @@ module.exports = {
 					password: '',
 					initials: ''}));
 			}const hashed = await bcrypt.hash(password, 10);
-			const found = await User.findOne({email: email});
-			const deleted = await User.deleteOne({email: email});
+			const found = await User.findOne({email: oldEmail}); //Find the old user
+			const deleted = await User.deleteOne({email: oldEmail}); // Deletes and updates
 			const user = new User({
 				_id: found._id,
 				firstName: firstName,
