@@ -2,19 +2,19 @@ import React from 'react';
 import TableHeader from './TableHeader';
 import TableContents from './TableContents';
 import SpreadsheetHeader from './SpreadsheetHeader';
-import { WLayout, WLHeader, WLMain, WLSide, WButton, WCard, WCFooter, WCHeader, WCContent } from 'wt-frontend';
+import { wLayout, WLHeader, WLMain, WLSide, WButton, WCard, WCFooter, WCHeader, WCContent } from 'wt-frontend';
 
 const MainContents = (props) => {
     return (
         <div className='table ' >
-            <WCard WLayout={"header-content"} className="subregion-table">
+            <WCard wLayout={"header-content"} className="subregion-table">
 
                 <WCHeader>
                     <SpreadsheetHeader activeList={props.activeList} addNewSubregion={props.addNewSubregion} />
                 </WCHeader>
 
                 <WCContent >
-                    <WCard WLayout={"header-content"} className="subregion-content-table">
+                    <WCard wLayout={"header-content"} className="subregion-content-table">
                         <WCHeader className = "subregion-content-header">
                             <TableHeader
                             // disabled={!props.activeList._id}        addItem={props.addItem}

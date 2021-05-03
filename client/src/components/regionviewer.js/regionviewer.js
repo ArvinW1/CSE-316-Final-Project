@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import Logo from '../navbar/Logo';
-import { WLayout, WLHeader, WNavbar, WNavItem, WLMain, WLSide, WCard } from 'wt-frontend';
+import { WLayout, WLHeader, WNavbar, WNavItem, WLMain, WLSide, WCard, WButton, WCFooter, WInput, WCol, WRow, WCContent } from 'wt-frontend';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_DB_MAP } from '../../cache/queries';
 import NavbarOptions from '../navbar/NavbarOptions';
@@ -90,31 +90,53 @@ const Regionviewer = (props) => {
             </WLHeader>
 
             <WLSide className="regionviewer-lside">
-                <WCard></WCard>
-                <div>
+                <WButton className={"subregion-button"}> <i className="material-icons">undo</i></WButton>
+                <WButton className={"subregion-button"}> <i className="material-icons">redo</i></WButton>
+                <WCard> image.png</WCard>
+                <div className="regionviewer-information">
                     {"Region Name: " + activeList.name}
                 </div>
 
-                <div>
+                <div className="regionviewer-information">
                     <span> Parent Region: </span>
-                    <span onClick = {() => props.history.push("/Spreadsheet/" + parentRegion._id)}> {parentRegion.name} </span>
+                    <span onClick={() => props.history.push("/Spreadsheet/" + parentRegion._id)}> {parentRegion.name} </span>
                 </div>
 
-                <div>
+                <div className="regionviewer-information">
                     {"Region Capital: " + activeList.name}
                 </div>
 
-                <div>
+                <div className="regionviewer-information">
                     {"Region Leader: " + activeList.name}
                 </div>
 
-                <div>
+                <div className="regionviewer-information">
                     {"# of Sub Regions: " + activeListLength}
                 </div>
 
             </WLSide>
 
-            <WLMain> </WLMain>
+            <WLMain>
+                <div className="landmark-header"> Region Landmarks: </div>
+                <WCard className="landmark-table" wLayout="content-footer">
+                    <WCContent>
+                        
+                    </WCContent>
+                    <WCFooter className = "landmark-table-footer">
+                        <WRow>
+                            <WCol size = "1">
+                                <WButton className={"subregion-button"}> <i className="material-icons">add</i></WButton>
+                            </WCol>
+                            <WCol size = "11">
+                            <WInput className = "landmark-table-input">
+
+                            </WInput>
+                            </WCol>
+                        </WRow>
+                    </WCFooter>
+                </WCard>
+
+            </WLMain>
 
             {
                 showUpdate && (<UpdateAccount user={props.user} fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} />)

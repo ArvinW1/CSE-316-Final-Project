@@ -141,12 +141,12 @@ html, body {
     scrollbar-width: thin;
 }
 
-.table-entries::-webkit-scrollbar, .wsidebar::-webkit-scrollbar {
+.table-entries::-webkit-scrollbar, .wsidebar::-webkit-scrollbar, .landmark-table-content::-webkit-scrollbar {
 	width: 5px;
 	height: 8px;
 	background-color: var(--darkblue-gray); 
 }
-.table-entries::-webkit-scrollbar-thumb, .wsidebar::-webkit-scrollbar-thumb {
+.table-entries::-webkit-scrollbar-thumb, .wsidebar::-webkit-scrollbar-thumb, .landmark-table-content::-webkit-scrollbar-thumb {
 	width: 5px;
 	height: 8px;
 	background-color: var(--blue-gray); 

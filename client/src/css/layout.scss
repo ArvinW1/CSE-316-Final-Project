@@ -335,5 +335,40 @@ html {
 }
 
 .regionviewer-lside{
+    padding-left: 100px;
+}
+
+.regionviewer-information{
+    color: white;
+    font-weight: bold;
+    font-size: x-large;
+    padding-top: 25px;
+}
+
+.landmark-header{
+    margin-left: 30%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: x-large;
+    color: white
+}
+
+.landmark-table{
+    min-width: 80%;
+    min-height: 80%;
+    background-color: black;
+}
+
+.landmark-table-footer{
+    background-color: rgb(70, 70, 70);
+}
+
+.landmark-table-content{
     
+}
+
+.landmark-table-input{
+    margin-top: 1%;
+    width: 45%
 }
