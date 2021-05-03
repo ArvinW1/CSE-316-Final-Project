@@ -30,6 +30,7 @@ const UpdateAccount = (props) => {
 			    return;
 			}
 			else {
+				props.fetchUser();
 				props.setShowUpdate(false);
             }
 
