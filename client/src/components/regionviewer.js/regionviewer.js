@@ -16,6 +16,8 @@ const Regionviewer = (props) => {
     const [showUpdate, toggleShowUpdate] = useState(false);
 
     let maps = [];
+    let currentPath = props.location.pathname.split("/");
+	let currentPathLength = currentPath.length-1;
 
 
     const { loading, error, data, refetch } = useQuery(GET_DB_MAP)
@@ -28,7 +30,7 @@ const Regionviewer = (props) => {
             maps.push(map)
         }
         if (!activeList._id) {
-            const currentList = maps.find(map => map._id === props.match.params._id)
+            const currentList = maps.find(map => map._id === currentPath[currentPathLength])
             setActiveList(currentList)
         }
     }
