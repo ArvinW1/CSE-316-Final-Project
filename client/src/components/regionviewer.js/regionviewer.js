@@ -36,6 +36,21 @@ const Regionviewer = (props) => {
         }
     }
 
+    const navigateToSpreadsheet = () =>{
+        let destination = "/Spreadsheet"
+        let x = 1;
+        for(var i = 2; i < currentPath.length; i++){
+            if(x){
+                destination += "/" + currentPath[i]
+                if(currentPath[i] === parentRegion._id){
+                    x = 0;
+                }
+            }
+        }
+        console.log(destination)
+        props.history.push(destination)
+    }
+
     const loadMap = (list) => {
         props.tps.clearAllTransactions();
         setActiveList(list);
@@ -109,7 +124,8 @@ const Regionviewer = (props) => {
 
                 <div className="regionviewer-information">
                     <span> Parent Region: </span>
-                    <span onClick={() => props.history.push("/Spreadsheet/" + parentRegion._id)}> {parentRegion.name} </span>
+                    <span onClick={navigateToSpreadsheet} className = "regionviewer-parent"> {parentRegion.name} </span>
+                    <span> <WButton className={"subregion-button"}> <i className="material-icons">edit</i></WButton> </span>
                 </div>
 
                 <div className="regionviewer-information">

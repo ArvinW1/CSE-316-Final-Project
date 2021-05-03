@@ -345,6 +345,11 @@ html {
     padding-top: 25px;
 }
 
+.regionviewer-parent{
+    color:lightblue;
+    cursor: pointer;
+}
+
 .landmark-header{
     margin-left: 30%;
     margin-top: 10px;
@@ -365,7 +370,7 @@ html {
 }
 
 .landmark-table-content{
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .landmark-table-input{
