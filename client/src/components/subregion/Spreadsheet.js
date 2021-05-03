@@ -18,7 +18,6 @@ function Spreadsheet(props) {
 	const [showCreate, toggleShowCreate] = useState(false);
 	const [showUpdate, toggleShowUpdate] = useState(false);
 	const [activeList, setActiveList] = useState({});
-	const [allMaps, setAllMaps] = useState({});
 	const [currentRegions, SetCurrentRegions] = useState({});
 
 	let maps = [];
@@ -37,7 +36,6 @@ function Spreadsheet(props) {
 			maps.push(map)
 		}
 		if(!activeList._id){
-			setAllMaps(maps)
 			console.log(props.match.params._id)
 			const currentList = maps.find(map => map._id === currentPath[currentPathLength])
 			setActiveList(currentList)
@@ -141,7 +139,7 @@ function Spreadsheet(props) {
 					<ul className = "ancestor"> 
 					{currentPathLength > 2 && data && <Ancestors currentPath = {currentPath} currentPathLength ={currentPathLength} maps= {maps}/>}
 					</ul>
-					
+
 					<ul></ul>
 
 					<ul>
