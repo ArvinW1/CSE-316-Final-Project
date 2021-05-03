@@ -372,6 +372,19 @@ html {
     margin-top: 1%;
     width: 45%
 }
+.ancestor-entry{
+    //overflow-x: auto;
+    display: flex;
+    width: 25%;
+}
+.ancestory-arrow{
+    margin-top: 15px;
+}
 .ancestor{
+    overflow-x: auto !important; 
+    display: flex !important;
     width: 50%;
+}
+.navbar-options-button{
+    padding-top: 3px !important;
 }

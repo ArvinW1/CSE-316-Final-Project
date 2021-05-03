@@ -6,6 +6,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { GET_DB_MAP } from '../../cache/queries';
 import NavbarOptions from '../navbar/NavbarOptions';
 import UpdateAccount from '../modals/UpdateAccount';
+import Ancestors from '../navbar/Ancestors';
 
 const Regionviewer = (props) => {
     const auth = props.user === null ? false : true;
@@ -81,6 +82,13 @@ const Regionviewer = (props) => {
                             <Logo className='logo' />
                         </WNavItem>
                     </ul>
+
+                    <ul className = "ancestor"> 
+					{currentPathLength > 2 && data && <Ancestors currentPath = {currentPath} currentPathLength ={currentPathLength} maps= {maps}/>}
+					</ul>
+					
+					<ul></ul>
+
                     <ul>
                         <NavbarOptions
                             fetchUser={props.fetchUser} auth={auth}

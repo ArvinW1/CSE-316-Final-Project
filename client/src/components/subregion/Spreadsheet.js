@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { WLayout, WLHeader, WNavbar, WNavItem  } from 'wt-frontend';
+import { WCol, WLayout, WLHeader, WNavbar, WNavItem, WRow  } from 'wt-frontend';
 import NavbarOptions from '../navbar/NavbarOptions';
 import UpdateAccount from '../modals/UpdateAccount';
 import Logo from '../navbar/Logo';
@@ -10,6 +10,7 @@ import WLMain from 'wt-frontend/build/components/wmodal/WMMain';
 import MainContents from '../main/MainContents';
 import * as mutations from '../../cache/mutations';
 import { UpdateListItems_Transaction } from '../../utils/jsTPS';
+import Ancestors from '../navbar/Ancestors';
 
 function Spreadsheet(props) {
 	const [showDelete, toggleShowDelete] = useState(false);
@@ -17,15 +18,16 @@ function Spreadsheet(props) {
 	const [showCreate, toggleShowCreate] = useState(false);
 	const [showUpdate, toggleShowUpdate] = useState(false);
 	const [activeList, setActiveList] = useState({});
+	const [allMaps, setAllMaps] = useState({});
 	const [currentRegions, SetCurrentRegions] = useState({});
 
 	let maps = [];
 	let currentPath = props.location.pathname.split("/");
 	let currentPathLength = currentPath.length-1;
-	console.log(currentPath)
 
 	
 	const { loading, error, data, refetch } = useQuery(GET_DB_MAP)
+	console.log(data)
 
 	if (loading) { console.log(loading, 'loading'); }
 	if (error) { console.log(error, 'error'); }
@@ -35,9 +37,9 @@ function Spreadsheet(props) {
 			maps.push(map)
 		}
 		if(!activeList._id){
+			setAllMaps(maps)
 			console.log(props.match.params._id)
 			const currentList = maps.find(map => map._id === currentPath[currentPathLength])
-			console.log("reload")
 			setActiveList(currentList)
 			if(currentList.subregions){
 				let currentsub = []
@@ -49,6 +51,7 @@ function Spreadsheet(props) {
 			}
 		}
 	}
+	
 	 //See if it is subregion by checking if currentlist is null/undefined
 	
 	const auth = props.user === null ? false : true;
@@ -134,6 +137,13 @@ function Spreadsheet(props) {
 							<Logo className='logo' />
 						</WNavItem>
 					</ul>
+					
+					<ul className = "ancestor"> 
+					{currentPathLength > 2 && data && <Ancestors currentPath = {currentPath} currentPathLength ={currentPathLength} maps= {maps}/>}
+					</ul>
+					
+					<ul></ul>
+
 					<ul>
 						<NavbarOptions
 							fetchUser={props.fetchUser} auth={auth}

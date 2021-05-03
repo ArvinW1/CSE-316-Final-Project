@@ -2,7 +2,7 @@ import React from 'react';
 import TableHeader from './TableHeader';
 import TableContents from './TableContents';
 import SpreadsheetHeader from './SpreadsheetHeader';
-import { wLayout, WLHeader, WLMain, WLSide, WButton, WCard, WCFooter, WCHeader, WCContent } from 'wt-frontend';
+import {  WCard, WCHeader, WCContent } from 'wt-frontend';
 
 const MainContents = (props) => {
     return (
