@@ -6,20 +6,7 @@ import { WButton } from 'wt-frontend';
 const AncestorContents = (props) => {
     
     const moveBackToSpreadSheet = () => {
-        let destination = "/Spreadsheet"
-        console.log(props.data._id)
-        console.log(props.entries.indexOf(props.data._id))
-        let i = 1;
-        for(let id of props.entries){
-            if (i){
-                destination += "/" + id
-                if(id === props.data._id){
-                    i = 0
-                }
-            }
-        }
-        console.log(destination)
-        props.history.push(destination)
+        props.history.push("/Spreadsheet/" + props.data._id)
     }
     return (
         <div className = "ancestor-entry">

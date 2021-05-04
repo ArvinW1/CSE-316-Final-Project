@@ -29,7 +29,6 @@ const MainContents = (props) => {
                                 key={props.activeList._id} activeList={props.activeList}
                                 deleteItem={props.deleteItem}   //reorderItem={props.reorderItem}
                                 currentRegions={props.currentRegions} //editItem={props.editItem} 
-                                currentPath = {props.currentPath}
                             />
                         </WCContent>
 

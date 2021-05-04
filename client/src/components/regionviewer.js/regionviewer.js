@@ -17,8 +17,6 @@ const Regionviewer = (props) => {
     const [showUpdate, toggleShowUpdate] = useState(false);
 
     let maps = [];
-    let currentPath = props.location.pathname.split("/");
-	let currentPathLength = currentPath.length-1;
 
 
     const { loading, error, data, refetch } = useQuery(GET_DB_MAP)
@@ -31,24 +29,13 @@ const Regionviewer = (props) => {
             maps.push(map)
         }
         if (!activeList._id) {
-            const currentList = maps.find(map => map._id === currentPath[currentPathLength])
+            const currentList = maps.find(map => map._id === props.match.params._id)
             setActiveList(currentList)
         }
     }
 
     const navigateToSpreadsheet = () =>{
-        let destination = "/Spreadsheet"
-        let x = 1;
-        for(var i = 2; i < currentPath.length; i++){
-            if(x){
-                destination += "/" + currentPath[i]
-                if(currentPath[i] === parentRegion._id){
-                    x = 0;
-                }
-            }
-        }
-        console.log(destination)
-        props.history.push(destination)
+        props.history.push("/Spreadsheet/" + parentRegion._id )
     }
 
     const loadMap = (list) => {
@@ -99,7 +86,7 @@ const Regionviewer = (props) => {
                     </ul>
 
                     <ul className = "ancestor"> 
-					{currentPathLength > 2 && data && <Ancestors currentPath = {currentPath} currentPathLength ={currentPathLength} maps= {maps}/>}
+					{activeList && data && <Ancestors maps= {maps}/>}
 					</ul>
 					
 					<ul></ul>

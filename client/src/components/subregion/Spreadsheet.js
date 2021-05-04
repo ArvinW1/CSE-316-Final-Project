@@ -21,8 +21,6 @@ function Spreadsheet(props) {
 	const [currentRegions, SetCurrentRegions] = useState({});
 
 	let maps = [];
-	let currentPath = props.location.pathname.split("/");
-	let currentPathLength = currentPath.length-1;
 
 	
 	const { loading, error, data, refetch } = useQuery(GET_DB_MAP)
@@ -37,7 +35,7 @@ function Spreadsheet(props) {
 		}
 		if(!activeList._id){
 			console.log(props.match.params._id)
-			const currentList = maps.find(map => map._id === currentPath[currentPathLength])
+			const currentList = maps.find(map => map._id === props.match.params._id)
 			setActiveList(currentList)
 			if(currentList.subregions){
 				let currentsub = []
@@ -56,7 +54,7 @@ function Spreadsheet(props) {
 
 	const reloadList = async () => {
 		if (activeList._id) {
-			let tempID = currentPath[currentPathLength];
+			let tempID = props.match.params._id;
 			let map = maps.find(map => map._id === tempID);
 			setActiveList(map);
 			console.log(map)
@@ -126,6 +124,7 @@ function Spreadsheet(props) {
 		toggleShowUpdate(!showUpdate)
 	}
 
+	console.log(activeList)
 	return (
 		<WLayout wLayout="header">
 			<WLHeader>
@@ -137,7 +136,7 @@ function Spreadsheet(props) {
 					</ul>
 					
 					<ul className = "ancestor"> 
-					{currentPathLength > 2 && data && <Ancestors currentPath = {currentPath} currentPathLength ={currentPathLength} maps= {maps}/>}
+					{activeList && data && <Ancestors maps= {maps} activeMap = {activeList}/>}
 					</ul>
 
 					<ul></ul>
@@ -152,7 +151,7 @@ function Spreadsheet(props) {
 				</WNavbar>
 			</WLHeader>
 
-			<WLMain> <MainContents activeList = {activeList} addNewSubregion = {addSubregion} currentRegions = {currentRegions} reloadList = {reloadList} currentPath = {currentPath}/> </WLMain>
+			<WLMain> <MainContents activeList = {activeList} addNewSubregion = {addSubregion} currentRegions = {currentRegions} reloadList = {reloadList}/> </WLMain>
 
 			{
 				showUpdate && (<UpdateAccount user={props.user} fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} />)

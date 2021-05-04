@@ -55,15 +55,10 @@ const TableEntry = (props) => {
         //     }
     }
     const MoveToNewSub = () => {
-        props.history.push(props.location.pathname + "/" + data._id)
+        props.history.push("/Spreadsheet/" + data._id)
     }
     const navigateToViewer = () =>{
-        let destination = "/Regionviewer";
-        var i;
-        for(i =2; i < props.currentPath.length; i++){
-            destination = destination +"/" + props.currentPath[i];
-        }
-        props.history.push(destination + "/" + data._id)
+        props.history.push("/Regionviewer/" + data._id)
     }
 
     return (

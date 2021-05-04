@@ -3,22 +3,20 @@ import AncestorContents from './AncestorContent';
 import { withRouter } from 'react-router-dom';
 
 const Ancestors = (props) => {
-    let entriesIds = [];
+    let currentList = props.maps.find(map => map._id === props.match.params._id)
     let entries = [];
-    for (var i = 2; i < props.currentPathLength; i++) {
-        entriesIds.push(props.currentPath[i]);
-    }
-    console.log(entriesIds)
-    console.log(props.maps)
-    for (let id of entriesIds) {
-        let ancestor = props.maps.find(map => map._id === id);
+
+    while(currentList.parent !== 'Untitled'){
+        let ancestor = props.maps.find(map => map._id === currentList.parent);
+        currentList= ancestor
         entries.push(ancestor);
     }
+    entries.reverse();
     console.log(entries)
 
     return (
         <div className="ancestor">
-            {entries.map((entry, index) => <AncestorContents data={entry} index={index} key={entry._id} entries = {entriesIds}/>)}
+            {entries.map((entry, index) => <AncestorContents data={entry} index={index} key={entry._id}/>)}
         </div>)
 }
 
