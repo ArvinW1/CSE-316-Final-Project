@@ -113,10 +113,10 @@ function Spreadsheet(props) {
 	}
 
 	const editMap = async (mapID, field, value, prev) =>{
-		const {data} = UpdateMapFieldInfo({variables: {_id: mapID, field: field, value: value}})
-		// let transaction = new EditMap_Transaction(mapID, field, prev, value, UpdateMapFieldInfo)
-		// props.tps.addTransaction(transaction)
-		// tpsRedo();
+		// const {data} = UpdateMapFieldInfo({variables: {_id: mapID, field: field, value: value}})
+		let transaction = new EditMap_Transaction(mapID, field, prev, value, UpdateMapFieldInfo)
+		props.tps.addTransaction(transaction)
+		tpsRedo();
 	}
 
 	const deleteRegion = async (regionID) =>{

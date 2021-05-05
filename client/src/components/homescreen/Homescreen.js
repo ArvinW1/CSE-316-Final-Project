@@ -16,7 +16,6 @@ import {
 	SortItems_Transaction,
 	UpdateListItems_Transaction,
 	ReorderItems_Transaction,
-	EditItem_Transaction
 } from '../../utils/jsTPS';
 import { withRouter } from 'react-router-dom';
 import UpdateAccount from '../modals/UpdateAccount';
@@ -170,15 +169,15 @@ function Homescreen(props) {
 
 	// };
 
-	const editItem = async (itemID, field, value, prev) => {
-		let flag = 0;
-		if (field === 'completed') flag = 1;
-		let listID = activeList._id;
-		let transaction = new EditItem_Transaction(listID, itemID, field, prev, value, flag, UpdateTodoItemField);
-		props.tps.addTransaction(transaction);
-		tpsRedo();
+	// const editItem = async (itemID, field, value, prev) => {
+	// 	let flag = 0;
+	// 	if (field === 'completed') flag = 1;
+	// 	let listID = activeList._id;
+	// 	let transaction = new EditItem_Transaction(listID, itemID, field, prev, value, flag, UpdateTodoItemField);
+	// 	props.tps.addTransaction(transaction);
+	// 	tpsRedo();
 
-	};
+	// };
 
 	const reorderItem = async (itemID, dir) => {
 		let listID = activeList._id;

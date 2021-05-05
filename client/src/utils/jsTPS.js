@@ -124,14 +124,14 @@ export class EditMap_Transaction extends jsTPS_Transaction{
 
     async doTransaction(){
         const {data} = await this.updateFunction({
-            variable : {_id: this.mapID, field: this.field, value: this.update}
+            variables : {_id: this.mapID, field: this.field, value: this.update}
         });
         return data;
     }
 
     async undoTransaction(){
         const {data} = await this.updateFunction({
-            variable : {_id: this.mapID, field: this.field, value: this.prev}
+            variables : {_id: this.mapID, field: this.field, value: this.prev}
         });
         if (data) console.log(data)
         return data
