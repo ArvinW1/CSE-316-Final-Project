@@ -146,7 +146,11 @@ export const DELETE_TODOLIST = gql`
 		deleteTodolist(_id: $_id)
 	}
 `;
-
+export const DELETE_SUBREGION = gql`
+	mutation DeleteSubregion($_id: String!, $subID: String!){
+		deleteSubregion(_id: $_id, subID: $subID)
+	}
+`;
 export const UPDATE_TODOLIST_FIELD = gql`
 	mutation UpdateTodolistField($_id: String!, $field: String!, $value: String!) {
 		updateTodolistField(_id: $_id, field: $field, value: $value)

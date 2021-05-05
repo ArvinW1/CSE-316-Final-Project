@@ -78,6 +78,7 @@ function Spreadsheet(props) {
 
 	const [AddSubregion] = useMutation(mutations.ADD_SUBREGION, mutationOptions)
 	const [UpdateMapFieldInfo] = useMutation(mutations.UPDATE_MAP_FIELD, mutationOptions);
+	const [DeleteSubregion] = useMutation(mutations.DELETE_SUBREGION, mutationOptions)
 
 	const tpsUndo = async () => {
 		const ret = await props.tps.undoTransaction();
@@ -116,6 +117,10 @@ function Spreadsheet(props) {
 		// let transaction = new EditMap_Transaction(mapID, field, prev, value, UpdateMapFieldInfo)
 		// props.tps.addTransaction(transaction)
 		// tpsRedo();
+	}
+
+	const deleteRegion = async (regionID) =>{
+		const {data} = DeleteSubregion({variables: {_id: activeList._id, subID: regionID}})
 	}
 
 	const loadMap = (list) => {
@@ -178,7 +183,7 @@ function Spreadsheet(props) {
 				</WNavbar>
 			</WLHeader>
 
-			<WLMain> <MainContents activeList = {activeList} addNewSubregion = {addSubregion} currentRegions = {currentRegions} reloadList = {reloadList} editMap = {editMap}/> </WLMain>
+			<WLMain> <MainContents activeList = {activeList} addNewSubregion = {addSubregion} currentRegions = {currentRegions} reloadList = {reloadList} editMap = {editMap} deleteRegion = {deleteRegion}/> </WLMain>
 
 			{
 				showUpdate && (<UpdateAccount user={props.user} fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} />)

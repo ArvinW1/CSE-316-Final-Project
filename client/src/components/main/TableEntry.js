@@ -68,7 +68,7 @@ const TableEntry = (props) => {
     return (
         <WRow className='table-entry'>
             <WCol size="1">
-                <WButton className={"subregion-button"}> <i className="material-icons">delete</i></WButton>
+                <WButton className={"subregion-button"}> <i className="material-icons" onClick = {() => props.deleteRegion(data._id)}>delete</i></WButton>
             </WCol>
             <WCol size="3">
                 {

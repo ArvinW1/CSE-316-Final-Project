@@ -76,6 +76,21 @@ module.exports = {
             if (deleted) return true;
             else return false;
         },
+        deleteSubregion: async (_, args) =>{
+            const {_id, subID} = args;
+            const objectId = new ObjectId(_id);
+            const subregionID = new ObjectId(subID)
+            const found = await Map.findOne({_id: objectId});
+            const deleted = await Map.deleteOne({_id: subregionID});
+            let subregions = found.subregions;
+            let index = subregions.indexOf(subID)
+            subregions.splice(index, 1)
+            
+            const updated = await Map.updateOne({_id: objectId}, {subregions: subregions})
+
+            if(deleted) return true;
+            else return false;
+        },
         /**
          * @param {*} args contain the field that is going to be updated and the values that it is going to be updated to. And the map's id to update
          * @returns {String} the values that it was updated to 

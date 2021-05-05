@@ -12,7 +12,7 @@ const TableContents = (props) => {
                     <TableEntry
                         data={entry} key={entry._id} index={index}
                         deleteItem={props.deleteItem} //reorderItem={props.reorderItem}
-                        editMap={props.editMap} 
+                        editMap={props.editMap} deleteRegion = {props.deleteRegion}
                     />
                 ))
             }
