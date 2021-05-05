@@ -76,10 +76,16 @@ module.exports = {
             if (deleted) return true;
             else return false;
         },
+        /**
+         * @param {*} args contain the field that is going to be updated and the values that it is going to be updated to. And the map's id to update
+         * @returns {String} the values that it was updated to 
+         */
         updateMapField: async (_, args) => {
             const { field, value, _id } = args;
             const objectId = new ObjectId(_id);
             const updated = await Map.updateOne({_id: objectId}, {[field]: value});
+            console.log(value)
+            console.log(field)
             if(updated) return value;
 			else return "";
         }

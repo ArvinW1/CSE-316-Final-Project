@@ -116,11 +116,11 @@ const Regionviewer = (props) => {
                 </div>
 
                 <div className="regionviewer-information">
-                    {"Region Capital: " + activeList.name}
+                    {"Region Capital: " + activeList.capital}
                 </div>
 
                 <div className="regionviewer-information">
-                    {"Region Leader: " + activeList.name}
+                    {"Region Leader: " + activeList.leader}
                 </div>
 
                 <div className="regionviewer-information">

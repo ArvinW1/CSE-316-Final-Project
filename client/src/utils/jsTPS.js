@@ -112,6 +112,32 @@ export class EditItem_Transaction extends jsTPS_Transaction {
     }
 }
 
+export class EditMap_Transaction extends jsTPS_Transaction{
+    constructor(mapID, field, prev, update, callback){
+        super();
+        this.mapID = mapID;
+        this.field = field;
+        this.prev = prev;
+        this.update = update;
+        this.updateFunction = callback
+    }
+
+    async doTransaction(){
+        const {data} = await this.updateFunction({
+            variable : {_id: this.mapID, field: this.field, value: this.update}
+        });
+        return data;
+    }
+
+    async undoTransaction(){
+        const {data} = await this.updateFunction({
+            variable : {_id: this.mapID, field: this.field, value: this.prev}
+        });
+        if (data) console.log(data)
+        return data
+    }
+}
+
 /*  Handles create/delete of list items */
 export class UpdateListItems_Transaction extends jsTPS_Transaction {
     // opcodes: 0 - delete, 1 - add 

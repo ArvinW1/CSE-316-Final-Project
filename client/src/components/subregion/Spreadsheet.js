@@ -9,7 +9,7 @@ import { GET_DB_MAP } from '../../cache/queries';
 import WLMain from 'wt-frontend/build/components/wmodal/WMMain';
 import MainContents from '../main/MainContents';
 import * as mutations from '../../cache/mutations';
-import { UpdateListItems_Transaction } from '../../utils/jsTPS';
+import { EditMap_Transaction, UpdateListItems_Transaction } from '../../utils/jsTPS';
 import Ancestors from '../navbar/Ancestors';
 
 function Spreadsheet(props) {
@@ -19,6 +19,8 @@ function Spreadsheet(props) {
 	const [showUpdate, toggleShowUpdate] = useState(false);
 	const [activeList, setActiveList] = useState({});
 	const [currentRegions, SetCurrentRegions] = useState({});
+	const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
+	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
 	let maps = [];
 
@@ -75,6 +77,24 @@ function Spreadsheet(props) {
 	}
 
 	const [AddSubregion] = useMutation(mutations.ADD_SUBREGION, mutationOptions)
+	const [UpdateMapFieldInfo] = useMutation(mutations.UPDATE_MAP_FIELD, mutationOptions);
+
+	const tpsUndo = async () => {
+		const ret = await props.tps.undoTransaction();
+		if (ret) {
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
+		}
+	}
+
+	const tpsRedo = async () => {
+		const ret = await props.tps.doTransaction();
+		if (ret) {
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
+		}
+	}
+
 
 	const addSubregion = async () => {
 		let map = activeList;
@@ -89,6 +109,13 @@ function Spreadsheet(props) {
 			subregions: [],
 		}
 		const {data} = AddSubregion({variables: {_id: map._id, subregion: newSub, index: -1}})
+	}
+
+	const editMap = async (mapID, field, value, prev) =>{
+		const {data} = UpdateMapFieldInfo({variables: {_id: mapID, field: field, value: value}})
+		// let transaction = new EditMap_Transaction(mapID, field, prev, value, UpdateMapFieldInfo)
+		// props.tps.addTransaction(transaction)
+		// tpsRedo();
 	}
 
 	const loadMap = (list) => {
@@ -151,7 +178,7 @@ function Spreadsheet(props) {
 				</WNavbar>
 			</WLHeader>
 
-			<WLMain> <MainContents activeList = {activeList} addNewSubregion = {addSubregion} currentRegions = {currentRegions} reloadList = {reloadList}/> </WLMain>
+			<WLMain> <MainContents activeList = {activeList} addNewSubregion = {addSubregion} currentRegions = {currentRegions} reloadList = {reloadList} editMap = {editMap}/> </WLMain>
 
 			{
 				showUpdate && (<UpdateAccount user={props.user} fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} />)
