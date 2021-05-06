@@ -33,6 +33,8 @@ module.exports = {
 				owner: subregion.owner,
                 landmarks: subregion.landmarks,
 				subregions: subregion.subregions,
+                sortRule: subregion.sortRule,
+                sortDirection: subregion.sortDirection
             })
             console.log(newMap)
             let mapSubregions = found.subregions;
@@ -48,7 +50,7 @@ module.exports = {
         addMaplist: async (_, args) => {
             const { map } = args;
             const objectId = new ObjectId();
-            const { name, owner, parent, capital, leader, landmarks, subregions} = map;
+            const { name, owner, parent, capital, leader, landmarks, subregions, sortRule, sortDirection} = map;
             const newMap = new Map({
                 _id: objectId,
 				name: name,
@@ -58,6 +60,8 @@ module.exports = {
 				owner: owner,
                 landmarks: landmarks,
 				subregions: subregions,
+                sortRule: sortRule,
+                sortDirection: sortDirection
             });
             const updated = await newMap.save();
             if(updated) {

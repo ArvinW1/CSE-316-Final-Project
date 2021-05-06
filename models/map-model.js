@@ -28,7 +28,15 @@ const mapSchema = new Schema(
 			required: true
 		},
 		landmarks: [Landmark],
-        subregions: [String]
+        subregions: [String],
+		sortRule: {
+			type: String, 
+			required: true
+		},
+		sortDirection: {
+			type: Number, 
+			required: true
+		}
 	},
 	{ timestamps: true }
 );

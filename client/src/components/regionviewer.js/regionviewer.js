@@ -86,7 +86,7 @@ const Regionviewer = (props) => {
                     </ul>
 
                     <ul className = "ancestor"> 
-					{activeList && data && <Ancestors maps= {maps}/>}
+					{activeList && data && <Ancestors maps= {maps} />}
 					</ul>
 					
 					<ul></ul>

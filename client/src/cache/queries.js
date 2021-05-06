@@ -45,6 +45,8 @@ export const GET_DB_MAP = gql`
 				location
 			}
 			subregions
+			sortRule
+			sortDirection
 		}
 	}
 `;

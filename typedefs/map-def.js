@@ -10,6 +10,8 @@ const typeDefs = gql `
         owner: String!
         landmarks: [Landmark]
         subregions: [String]
+        sortRule: String!
+		sortDirection: Int!
     }
     type Landmark{
         _id: String!
@@ -35,6 +37,8 @@ const typeDefs = gql `
         owner: String!
         landmarks: [LandmarkInput]
         subregions: [String]
+        sortRule: String!
+		sortDirection: Int!
     }
     input LandmarkInput{
         _id: String!

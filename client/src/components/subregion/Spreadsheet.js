@@ -28,7 +28,7 @@ function Spreadsheet(props) {
 		}
 	}
 	document.onkeydown = keyCombination;
-	
+
 	const [showDelete, toggleShowDelete] = useState(false);
 	const [showLogin, toggleShowLogin] = useState(false);
 	const [showCreate, toggleShowCreate] = useState(false);
@@ -131,6 +131,8 @@ function Spreadsheet(props) {
 			owner: props.user._id,
 			landmarks: [],
 			subregions: [],
+			sortRule: 'name',
+	 		sortDirection: -1
 		}
 		let opcode = 1;
 		let transaction = new UpdateMap_Transaction(map._id, newSub._id, newSub, opcode, AddSubregion, DeleteSubregion)
@@ -157,6 +159,8 @@ function Spreadsheet(props) {
 			owner: region.owner,
 			landmarks: region.landmarks,
 			subregions: region.subregions,
+			sortRule: region.sortRule,
+	 		sortDirection: region.sortDirection
 		}
 		let transaction = new UpdateMap_Transaction(map._id, region._id, regionToDelete, opcode, AddSubregion, DeleteSubregion, index)
 		props.tps.addTransaction(transaction)

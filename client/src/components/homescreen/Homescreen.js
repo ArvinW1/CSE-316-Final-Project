@@ -213,6 +213,8 @@ function Homescreen(props) {
 			owner: props.user._id,
 			landmarks: [],
 			subregions: [],
+			sortRule: 'name',
+	 		sortDirection: -1
 		}
 		const { data } = await AddMapList({ variables: { map: map }, refetchQueries: [{ query: GET_DB_MAP }] });
 		if (data) {

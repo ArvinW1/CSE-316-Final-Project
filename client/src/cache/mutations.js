@@ -133,6 +133,8 @@ export const ADD_MAPLIST = gql`
 				}
         		parent
 				subregions
+				sortRule
+				sortDirection
 			}
 		}
 `;
