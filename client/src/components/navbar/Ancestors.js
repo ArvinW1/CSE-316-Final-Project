@@ -12,7 +12,6 @@ const Ancestors = (props) => {
         entries.push(ancestor);
     }
     entries.reverse();
-    console.log(entries)
 
     return (
         <div className="ancestor">

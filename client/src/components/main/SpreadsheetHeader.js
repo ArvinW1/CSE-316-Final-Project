@@ -6,8 +6,6 @@ const SpreadsheetHeader = (props) => {
     let regionName = "Region Name: " + props.activeList.name;
     const clickDisabled = () => { };
 
-    console.log(props.canUndo)
-
     const undoOptions = {
         className: !props.canUndo ? ' table-header-button-disabled ' : 'table-header-button',
         onClick: !props.canUndo  ? clickDisabled : props.undo,

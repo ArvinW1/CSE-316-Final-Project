@@ -64,7 +64,6 @@ function Spreadsheet(props) {
 			}
 		}
 	}
-
 	//See if it is subregion by checking if currentlist is null/undefined
 
 	const auth = props.user === null ? false : true;
