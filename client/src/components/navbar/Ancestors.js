@@ -16,7 +16,7 @@ const Ancestors = (props) => {
 
     return (
         <div className="ancestor">
-            {entries.map((entry, index) => <AncestorContents data={entry} index={index} key={entry._id}/>)}
+            {entries.map((entry, index) => <AncestorContents data={entry} index={index} key={entry._id} clearTransactions = {props.clearTransactions}/>)}
         </div>)
 }
 

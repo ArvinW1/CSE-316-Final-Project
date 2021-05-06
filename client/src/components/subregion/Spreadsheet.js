@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { WCol, WLayout, WLHeader, WNavbar, WNavItem, WRow  } from 'wt-frontend';
+import { WCol, WLayout, WLHeader, WNavbar, WNavItem, WRow } from 'wt-frontend';
 import NavbarOptions from '../navbar/NavbarOptions';
 import UpdateAccount from '../modals/UpdateAccount';
 import Delete from '../modals/Delete';
@@ -22,14 +22,12 @@ function Spreadsheet(props) {
 	const [currentRegions, SetCurrentRegions] = useState({});
 	const [region, setRegion] = useState({});
 	const [index, setIndex] = useState({});
-	const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
-	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
+	const [canUndo, setCanUndo] = useState(false);
+	const [canRedo, setCanRedo] = useState(false);
 
 	let maps = [];
 
-	
 	const { loading, error, data, refetch } = useQuery(GET_DB_MAP)
-	console.log(data)
 
 	if (loading) { console.log(loading, 'loading'); }
 	if (error) { console.log(error, 'error'); }
@@ -38,13 +36,12 @@ function Spreadsheet(props) {
 		for (let map of data.getAllMaps) {
 			maps.push(map)
 		}
-		if(!activeList._id){
-			console.log(props.match.params._id)
+		if (!activeList._id) {
 			const currentList = maps.find(map => map._id === props.match.params._id)
 			setActiveList(currentList)
-			if(currentList.subregions){
+			if (currentList.subregions) {
 				let currentsub = []
-				for(let sub of currentList.subregions){
+				for (let sub of currentList.subregions) {
 					let children = maps.find(map => map._id === sub)
 					currentsub.push(children)
 				}
@@ -52,9 +49,9 @@ function Spreadsheet(props) {
 			}
 		}
 	}
-	
-	 //See if it is subregion by checking if currentlist is null/undefined
-	
+
+	//See if it is subregion by checking if currentlist is null/undefined
+
 	const auth = props.user === null ? false : true;
 
 	const reloadList = async () => {
@@ -63,9 +60,9 @@ function Spreadsheet(props) {
 			let map = maps.find(map => map._id === tempID);
 			setActiveList(map);
 			console.log(map)
-			if(map.subregions){
+			if (map.subregions) {
 				let currentsub = []
-				for(let sub of map.subregions){
+				for (let sub of map.subregions) {
 					let children = maps.find(map => map._id === sub)
 					currentsub.push(children)
 				}
@@ -99,6 +96,14 @@ function Spreadsheet(props) {
 		}
 	}
 
+	const clearTps = async () => {
+		const ret = props.tps.clearAllTransactions();
+		if(ret){
+			setCanUndo(false);
+			setCanRedo(false);
+		}
+	}
+
 
 	const addSubregion = async () => {
 		let map = activeList;
@@ -116,17 +121,15 @@ function Spreadsheet(props) {
 		let transaction = new UpdateMap_Transaction(map._id, newSub._id, newSub, opcode, AddSubregion, DeleteSubregion)
 		props.tps.addTransaction(transaction)
 		tpsRedo();
-		//const {data} = AddSubregion({variables: {_id: map._id, subregion: newSub, index: -1}})
 	}
 
-	const editMap = async (mapID, field, value, prev) =>{
-		// const {data} = UpdateMapFieldInfo({variables: {_id: mapID, field: field, value: value}})
+	const editMap = async (mapID, field, value, prev) => {
 		let transaction = new EditMap_Transaction(mapID, field, prev, value, UpdateMapFieldInfo)
 		props.tps.addTransaction(transaction)
 		tpsRedo();
 	}
 
-	const deleteRegion = async (regionID) =>{
+	const deleteRegion = async (regionID) => {
 		let map = activeList;
 		let opcode = 0;
 		let region = maps.find(map => map._id === regionID)
@@ -140,7 +143,7 @@ function Spreadsheet(props) {
 			landmarks: region.landmarks,
 			subregions: region.subregions,
 		}
-		let transaction = new UpdateMap_Transaction(map._id, region._id, regionToDelete, opcode, addSubregion, DeleteSubregion, index)
+		let transaction = new UpdateMap_Transaction(map._id, region._id, regionToDelete, opcode, AddSubregion, DeleteSubregion, index)
 		props.tps.addTransaction(transaction)
 		tpsRedo();
 	}
@@ -180,19 +183,18 @@ function Spreadsheet(props) {
 		toggleShowUpdate(!showUpdate)
 	}
 
-	console.log(activeList)
 	return (
 		<WLayout wLayout="header">
 			<WLHeader>
 				<WNavbar color="colored">
 					<ul>
 						<WNavItem>
-							<Logo className='logo' />
+							<Logo className='logo' clearTransactions = {clearTps}/>
 						</WNavItem>
 					</ul>
-					
-					<ul className = "ancestor"> 
-					{activeList && data && <Ancestors maps= {maps} activeMap = {activeList}/>}
+
+					<ul className="ancestor">
+						{activeList && data && <Ancestors maps={maps} activeMap={activeList} clearTransactions = {clearTps}/>}
 					</ul>
 
 					<ul></ul>
@@ -207,7 +209,13 @@ function Spreadsheet(props) {
 				</WNavbar>
 			</WLHeader>
 
-			<WLMain> <MainContents activeList = {activeList} addNewSubregion = {addSubregion} currentRegions = {currentRegions} reloadList = {reloadList} editMap = {editMap} deleteRegion = {deleteRegion} setShowDelete = {setShowDelete}/> </WLMain>
+			<WLMain>
+				<MainContents
+					activeList={activeList} addNewSubregion={addSubregion} currentRegions={currentRegions}
+					reloadList={reloadList} editMap={editMap} setShowDelete={setShowDelete} 
+					undo={tpsUndo} redo={tpsRedo} canUndo={canUndo} canRedo={canRedo} clearTransactions = {clearTps}
+				/>
+			</WLMain>
 
 			{
 				showDelete && (<Delete deleteMap={deleteRegion} activeid={region} setShowDelete={setShowDelete} />)

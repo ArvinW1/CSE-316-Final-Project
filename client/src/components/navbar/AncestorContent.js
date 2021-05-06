@@ -6,6 +6,7 @@ import { WButton } from 'wt-frontend';
 const AncestorContents = (props) => {
     
     const moveBackToSpreadSheet = () => {
+        props.clearTransactions();
         props.history.push("/Spreadsheet/" + props.data._id)
     }
     return (

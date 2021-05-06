@@ -51,8 +51,10 @@ const TableEntry = (props) => {
     const MoveToNewSub = () => {
         trigger = true;
         timer = setTimeout(() => {
-            if (trigger)
+            if (trigger){
                 props.history.push("/Spreadsheet/" + data._id)
+                props.clearTransactions();
+            }
         }, 200);
     }
 
@@ -64,6 +66,7 @@ const TableEntry = (props) => {
 
     const navigateToViewer = () => {
         props.history.push("/Regionviewer/" + data._id)
+        props.clearTransactions();
     }
 
     return (

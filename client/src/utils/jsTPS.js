@@ -195,7 +195,7 @@ export class UpdateMap_Transaction extends jsTPS_Transaction{
 						  : { data } = await this.addFunction({
 							variables: {subregion: this.region, _id: this.mapID, index: this.index}})  
 		if(this.opcode !== 0) {
-            this.region._id = this.regionID = data.addItem;
+            this.region._id = this.regionID = data.addSubregion;
 		}
 		return data;
     }
@@ -207,7 +207,7 @@ export class UpdateMap_Transaction extends jsTPS_Transaction{
                         : { data } = await this.addFunction({
                             variables: {subregion: this.region, _id: this.mapID, index: this.index}})
 		if(this.opcode !== 1) {
-            this.region._id = this.regionID = data.addItem;
+            this.region._id = this.regionID = data.addSubregion;
         }
 		return data;
     }
