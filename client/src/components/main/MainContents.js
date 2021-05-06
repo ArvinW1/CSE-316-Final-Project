@@ -22,7 +22,8 @@ const MainContents = (props) => {
                             // disabled={!props.activeList._id}        addItem={props.addItem}
                             // undo={props.undo} redo={props.redo}     canUndo={props.canUndo} 
                             // canRedo={props.canRedo}                 setShowDelete={props.setShowDelete}
-                            // setActiveList={props.setActiveList}     sort={props.sort}
+                            // setActiveList={props.setActiveList}     
+                            sort={props.sort}
                             />
                         </WCHeader>
 

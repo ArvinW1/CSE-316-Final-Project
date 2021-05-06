@@ -10,7 +10,7 @@ import { GET_DB_MAP } from '../../cache/queries';
 import WLMain from 'wt-frontend/build/components/wmodal/WMMain';
 import MainContents from '../main/MainContents';
 import * as mutations from '../../cache/mutations';
-import { EditMap_Transaction, UpdateListItems_Transaction, UpdateMap_Transaction } from '../../utils/jsTPS';
+import { EditMap_Transaction, SortMaps_Transaction, UpdateListItems_Transaction, UpdateMap_Transaction } from '../../utils/jsTPS';
 import Ancestors from '../navbar/Ancestors';
 
 function Spreadsheet(props) {
@@ -93,6 +93,7 @@ function Spreadsheet(props) {
 	const [AddSubregion] = useMutation(mutations.ADD_SUBREGION, mutationOptions)
 	const [UpdateMapFieldInfo] = useMutation(mutations.UPDATE_MAP_FIELD, mutationOptions);
 	const [DeleteSubregion] = useMutation(mutations.DELETE_SUBREGION, mutationOptions)
+	const [SortSubregions] = useMutation(mutations.SORT_MAPS, mutationOptions)
 
 	const tpsUndo = async () => {
 		const ret = await props.tps.undoTransaction();
@@ -162,7 +163,16 @@ function Spreadsheet(props) {
 	 		sortDirection: region.sortDirection
 		}
 		let transaction = new UpdateMap_Transaction(map._id, region._id, regionToDelete, opcode, AddSubregion, DeleteSubregion, index)
-		props.tps.addTransaction(transaction)
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+	}
+
+	const sort = (criteria) =>{
+		let map = activeList;
+		let opcode = 1;
+		let direction = activeList.sortRule === criteria ? activeList.sortDirection : -1;
+		let transaction = new SortMaps_Transaction(map._id, opcode, activeList.subregions, criteria, activeList.sortRule, direction , activeList.sortDirection, SortSubregions)
+		props.tps.addTransaction(transaction);
 		tpsRedo();
 	}
 
@@ -232,6 +242,7 @@ function Spreadsheet(props) {
 					activeList={activeList} addNewSubregion={addSubregion} currentRegions={currentRegions}
 					reloadList={reloadList} editMap={editMap} setShowDelete={setShowDelete} 
 					undo={tpsUndo} redo={tpsRedo} canUndo={canUndo} canRedo={canRedo} clearTransactions = {clearTps}
+					sort = {sort}
 				/>
 			</WLMain>
 

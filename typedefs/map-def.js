@@ -27,6 +27,7 @@ const typeDefs = gql `
         deleteMap(_id: String!): Boolean
         updateMapField(_id: String!, field: String!, value: String!): String
         deleteSubregion(_id: String!, subID: String!): Boolean
+        sortMaps(_id: String!, criteria: String!, opcode: Int!, regionIDs: [String], direction: Int!): [String]
     }
     input MapInput {
         _id: String!

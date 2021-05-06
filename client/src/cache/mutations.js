@@ -99,6 +99,12 @@ export const SORT_ITEMS = gql`
 	}
 `;
 
+export const SORT_MAPS = gql`
+	mutation SortMaps($_id: String!, $criteria: String!, $opcode: Int!, $regionIDs:[String], $direction: Int!){
+		sortMaps(_id: $_id, criteria: $criteria, opcode: $opcode, regionIDs: $regionIDs, direction: $direction)
+	}
+`;
+
 export const ADD_TODOLIST = gql`
 	mutation AddTodolist($todolist: TodoInput!) {
 		addTodolist(todolist: $todolist) {

@@ -76,6 +76,31 @@ export class SortItems_Transaction extends jsTPS_Transaction{
     }
 }
 
+export class SortMaps_Transaction extends jsTPS_Transaction{
+    constructor(mapId, opcode, subregionIds, newCriteria, prevCriteria, newDirection, prevDirection, callback) {
+        super();
+        this.mapId = mapId;
+        this.opcode = opcode;
+        this.subregionIds = subregionIds;
+        this.newCriteria = newCriteria;
+        this.prevCriteria = prevCriteria;
+        this.newDirection = newDirection;
+        this.prevDirection = prevDirection;
+        this.updateFunction = callback;
+    }
+    async doTransaction(){
+        const {data} = await this.updateFunction({variables: {_id: this.mapId, criteria: this.newCriteria, opcode: this.opcode, regionIDs: this.subregionIds, direction: this.newDirection}})
+        console.log(data)
+        return data
+    }
+    async undoTransaction(){
+        const {data} = await this.updateFunction({variables: {_id: this.mapId, criteria: this.prevCriteria, opcode: 0, regionIDs: this.subregionIds, direction: this.prevDirection}})
+        console.log(data)
+        return data
+    }
+
+}
+
 export class EditItem_Transaction extends jsTPS_Transaction {
 	constructor(listID, itemID, field, prev, update, flag, callback) {
 		super();

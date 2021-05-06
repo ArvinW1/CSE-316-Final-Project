@@ -27,15 +27,15 @@ const TableHeader = (props) => {
             <WCol size = "1"></WCol>
 
             <WCol size="3">
-                <WButton className='table-header-section' wType="texted" >Name</WButton>
+                <WButton className='table-header-section' wType="texted" onClick = {() => props.sort('name')} >Name</WButton>
             </WCol>
             
             <WCol size="2">
-                <WButton className='table-header-section' wType="texted">Capital</WButton>
+                <WButton className='table-header-section' wType="texted" onClick = {() => props.sort('capital')}>Capital</WButton>
             </WCol>
 
             <WCol size="2">
-                <WButton className='table-header-section' wType="texted">Leader</WButton>
+                <WButton className='table-header-section' wType="texted" onClick = {() => props.sort('leader')}>Leader</WButton>
             </WCol>
             <WCol size="1">
                 <WButton className='table-header-section' wType="texted">Flag</WButton>
