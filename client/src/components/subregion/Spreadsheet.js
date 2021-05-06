@@ -14,6 +14,21 @@ import { EditMap_Transaction, UpdateListItems_Transaction, UpdateMap_Transaction
 import Ancestors from '../navbar/Ancestors';
 
 function Spreadsheet(props) {
+
+	const keyCombination = (e, callback) => {
+		if (e.key === 'z' && e.ctrlKey) {
+			if (props.tps.hasTransactionToUndo()) {
+				tpsUndo();
+			}
+		}
+		else if (e.key === 'y' && e.ctrlKey) {
+			if (props.tps.hasTransactionToRedo()) {
+				tpsRedo();
+			}
+		}
+	}
+	document.onkeydown = keyCombination;
+	
 	const [showDelete, toggleShowDelete] = useState(false);
 	const [showLogin, toggleShowLogin] = useState(false);
 	const [showCreate, toggleShowCreate] = useState(false);
