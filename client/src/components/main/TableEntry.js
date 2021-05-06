@@ -47,6 +47,7 @@ const TableEntry = (props) => {
             }
     };
 
+
     const MoveToNewSub = () => {
         trigger = true;
         timer = setTimeout(() => {
@@ -68,7 +69,7 @@ const TableEntry = (props) => {
     return (
         <WRow className='table-entry'>
             <WCol size="1">
-                <WButton className={"subregion-button"}> <i className="material-icons" onClick = {() => props.deleteRegion(data._id)}>delete</i></WButton>
+                <WButton className={"subregion-button"}> <i className="material-icons" onClick = {() => props.setShowDelete(data._id, props.index)}>delete</i></WButton>
             </WCol>
             <WCol size="3">
                 {

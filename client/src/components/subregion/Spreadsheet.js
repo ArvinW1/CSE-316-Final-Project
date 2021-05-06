@@ -3,13 +3,14 @@ import { withRouter } from 'react-router-dom';
 import { WCol, WLayout, WLHeader, WNavbar, WNavItem, WRow  } from 'wt-frontend';
 import NavbarOptions from '../navbar/NavbarOptions';
 import UpdateAccount from '../modals/UpdateAccount';
+import Delete from '../modals/Delete';
 import Logo from '../navbar/Logo';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_DB_MAP } from '../../cache/queries';
 import WLMain from 'wt-frontend/build/components/wmodal/WMMain';
 import MainContents from '../main/MainContents';
 import * as mutations from '../../cache/mutations';
-import { EditMap_Transaction, UpdateListItems_Transaction } from '../../utils/jsTPS';
+import { EditMap_Transaction, UpdateListItems_Transaction, UpdateMap_Transaction } from '../../utils/jsTPS';
 import Ancestors from '../navbar/Ancestors';
 
 function Spreadsheet(props) {
@@ -19,6 +20,8 @@ function Spreadsheet(props) {
 	const [showUpdate, toggleShowUpdate] = useState(false);
 	const [activeList, setActiveList] = useState({});
 	const [currentRegions, SetCurrentRegions] = useState({});
+	const [region, setRegion] = useState({});
+	const [index, setIndex] = useState({});
 	const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
@@ -109,7 +112,11 @@ function Spreadsheet(props) {
 			landmarks: [],
 			subregions: [],
 		}
-		const {data} = AddSubregion({variables: {_id: map._id, subregion: newSub, index: -1}})
+		let opcode = 1;
+		let transaction = new UpdateMap_Transaction(map._id, newSub._id, newSub, opcode, AddSubregion, DeleteSubregion)
+		props.tps.addTransaction(transaction)
+		tpsRedo();
+		//const {data} = AddSubregion({variables: {_id: map._id, subregion: newSub, index: -1}})
 	}
 
 	const editMap = async (mapID, field, value, prev) =>{
@@ -120,7 +127,22 @@ function Spreadsheet(props) {
 	}
 
 	const deleteRegion = async (regionID) =>{
-		const {data} = DeleteSubregion({variables: {_id: activeList._id, subID: regionID}})
+		let map = activeList;
+		let opcode = 0;
+		let region = maps.find(map => map._id === regionID)
+		let regionToDelete = {
+			_id: region._id,
+			name: region.name,
+			parent: region.parent,
+			capital: region.capital,
+			leader: region.leader,
+			owner: region.owner,
+			landmarks: region.landmarks,
+			subregions: region.subregions,
+		}
+		let transaction = new UpdateMap_Transaction(map._id, region._id, regionToDelete, opcode, addSubregion, DeleteSubregion, index)
+		props.tps.addTransaction(transaction)
+		tpsRedo();
 	}
 
 	const loadMap = (list) => {
@@ -142,7 +164,9 @@ function Spreadsheet(props) {
 		toggleShowCreate(!showCreate);
 	};
 
-	const setShowDelete = () => {
+	const setShowDelete = (regionID, index) => {
+		setRegion(regionID);
+		setIndex(index);
 		toggleShowCreate(false);
 		toggleShowLogin(false);
 		toggleShowUpdate(false);
@@ -183,7 +207,11 @@ function Spreadsheet(props) {
 				</WNavbar>
 			</WLHeader>
 
-			<WLMain> <MainContents activeList = {activeList} addNewSubregion = {addSubregion} currentRegions = {currentRegions} reloadList = {reloadList} editMap = {editMap} deleteRegion = {deleteRegion}/> </WLMain>
+			<WLMain> <MainContents activeList = {activeList} addNewSubregion = {addSubregion} currentRegions = {currentRegions} reloadList = {reloadList} editMap = {editMap} deleteRegion = {deleteRegion} setShowDelete = {setShowDelete}/> </WLMain>
+
+			{
+				showDelete && (<Delete deleteMap={deleteRegion} activeid={region} setShowDelete={setShowDelete} />)
+			}
 
 			{
 				showUpdate && (<UpdateAccount user={props.user} fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} />)

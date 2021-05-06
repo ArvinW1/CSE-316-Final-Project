@@ -176,6 +176,43 @@ export class UpdateListItems_Transaction extends jsTPS_Transaction {
     }
 }
 
+export class UpdateMap_Transaction extends jsTPS_Transaction{
+    constructor(mapID, regionID, region, opcode, addfunc, delfunc, index = -1) {
+        super();
+        this.mapID = mapID;
+		this.regionID = regionID;
+		this.region = region;
+        this.addFunction = addfunc;
+        this.deleteFunction = delfunc;
+        this.opcode = opcode;
+        this.index = index;
+    }
+
+    async doTransaction() {
+		let data;
+        this.opcode === 0 ? { data } = await this.deleteFunction({
+							variables: {_id: this.mapID, subID: this.regionID}})
+						  : { data } = await this.addFunction({
+							variables: {subregion: this.region, _id: this.mapID, index: this.index}})  
+		if(this.opcode !== 0) {
+            this.region._id = this.regionID = data.addItem;
+		}
+		return data;
+    }
+
+    async undoTransaction() {
+		let data;
+        this.opcode === 1 ? { data } = await this.deleteFunction({
+                            variables: {_id: this.mapID, subID: this.regionID}})
+                        : { data } = await this.addFunction({
+                            variables: {subregion: this.region, _id: this.mapID, index: this.index}})
+		if(this.opcode !== 1) {
+            this.region._id = this.regionID = data.addItem;
+        }
+		return data;
+    }
+}
+
 
 
 
