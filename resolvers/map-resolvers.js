@@ -137,16 +137,34 @@ module.exports = {
                     default:
                         return regionIDs
                 }
-                for(let region of sortedMaps){
+                for (let region of sortedMaps) {
                     sortedIDs.push(region._id)
                 }
-                const updated = await Map.updateOne({_id: mapID}, {subregions: sortedIDs, sortRule: criteria, sortDirection: newDirection})
-                if(updated) return (sortedIDs)
+                const updated = await Map.updateOne({ _id: mapID }, { subregions: sortedIDs, sortRule: criteria, sortDirection: newDirection })
+                if (updated) return (sortedIDs)
             }
-            else{
-                const updated = await Map.updateOne({_id: mapID}, {subregions: regionIDs, sortRule: criteria, sortDirection: direction})
-                if(updated) return (regionIDs)
+            else {
+                const updated = await Map.updateOne({ _id: mapID }, { subregions: regionIDs, sortRule: criteria, sortDirection: direction })
+                if (updated) return (regionIDs)
             }
+        },
+        changeParent: async (_, args) => {
+            const { parentId, regionId, newParentId } = args
+            const parent = new ObjectId(parentId);
+            const region = new ObjectId(regionId);
+            const newParent = new ObjectId(newParentId);
+            const foundParent = await Map.findOne({ _id: parent });
+            const foundNewParent = await Map.findOne({ _id: newParent });
+            let parentSubregions = foundParent.subregions;
+            let newParentSubregions = foundNewParent.subregions;
+            let index = parentSubregions.indexOf(regionId)
+            parentSubregions.splice(index, 1)
+            newParentSubregions.push(regionId)
+
+            const update_one = await Map.updateOne({ _id: parent }, { subregions: parentSubregions });
+            const update_two = await Map.updateOne({ _id: region }, { parent: newParentId });
+            const update_three = await Map.updateOne({ _id: newParent }, { subregions: newParentSubregions })
+            if (update_two) return newParentId
         }
     }
 }

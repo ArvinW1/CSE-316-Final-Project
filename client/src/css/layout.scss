@@ -210,8 +210,12 @@ html {
     overflow-y: scroll;
 }
 
-.list-item-edit, .table-input, .table-select {
+.list-item-edit, .table-input {
     width: 100%;
+}
+.table-select{
+    width: 15%;
+    height: 50%;
 }
 
 .list-item-edit-input {
@@ -219,7 +223,7 @@ html {
     color: black !important
 }
 
-.table-input, .table-select {
+.table-input {
     height: 100%;
     display: flex;
     align-items: center;

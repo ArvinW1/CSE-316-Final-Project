@@ -7,16 +7,36 @@ import { GET_DB_MAP } from '../../cache/queries';
 import NavbarOptions from '../navbar/NavbarOptions';
 import UpdateAccount from '../modals/UpdateAccount';
 import Ancestors from '../navbar/Ancestors';
+import RegionviewerParent from './RegionviewerParent';
+import * as mutations from '../../cache/mutations';
+import { ChangeParent_Transaction } from '../../utils/jsTPS';
 
 const Regionviewer = (props) => {
+
+    const keyCombination = (e, callback) => {
+        if (e.key === 'z' && e.ctrlKey) {
+            if (props.tps.hasTransactionToUndo()) {
+                tpsUndo();
+            }
+        }
+        else if (e.key === 'y' && e.ctrlKey) {
+            if (props.tps.hasTransactionToRedo()) {
+                tpsRedo();
+            }
+        }
+    }
+    document.onkeydown = keyCombination;
+
     const auth = props.user === null ? false : true;
     const [activeList, setActiveList] = useState({});
     const [showDelete, toggleShowDelete] = useState(false);
     const [showLogin, toggleShowLogin] = useState(false);
     const [showCreate, toggleShowCreate] = useState(false);
     const [showUpdate, toggleShowUpdate] = useState(false);
+    const [possibleParents, setPossibleParents] = useState({});
+    const [showParents, toggleShowParents] = useState(false);
     const [canUndo, setCanUndo] = useState(false);
-	const [canRedo, setCanRedo] = useState(false);
+    const [canRedo, setCanRedo] = useState(false);
 
     let maps = [];
 
@@ -36,8 +56,30 @@ const Regionviewer = (props) => {
         }
     }
 
-    const navigateToSpreadsheet = () =>{
-        props.history.push("/Spreadsheet/" + parentRegion._id )
+    const reloadList = async () => {
+		if (activeList._id) {
+			let tempID = props.match.params._id;
+			let map = maps.find(map => map._id === tempID);
+			setActiveList(map);
+		}
+	}
+	const mutationOptions = {
+		refetchQueries: [{ query: GET_DB_MAP }],
+		awaitRefetchQueries: true,
+		onCompleted: () => reloadList()
+	}
+
+    const [ChangeParent] = useMutation(mutations.CHANGE_PARENT, mutationOptions)
+
+    const changeParent = async(newParentId) =>{
+        console.log("hello")
+        let transaction = new ChangeParent_Transaction(activeList.parent, activeList._id, newParentId, ChangeParent)
+        props.tps.addTransaction(transaction)
+		tpsRedo();
+    }
+
+    const navigateToSpreadsheet = () => {
+        props.history.push("/Spreadsheet/" + parentRegion._id)
     }
 
     const loadMap = (list) => {
@@ -46,44 +88,44 @@ const Regionviewer = (props) => {
     }
 
     const tpsUndo = async () => {
-		const ret = await props.tps.undoTransaction();
-		if (ret) {
-			setCanUndo(props.tps.hasTransactionToUndo());
-			setCanRedo(props.tps.hasTransactionToRedo());
-		}
-	}
+        const ret = await props.tps.undoTransaction();
+        if (ret) {
+            setCanUndo(props.tps.hasTransactionToUndo());
+            setCanRedo(props.tps.hasTransactionToRedo());
+        }
+    }
 
-	const tpsRedo = async () => {
-		const ret = await props.tps.doTransaction();
-		if (ret) {
-			setCanUndo(props.tps.hasTransactionToUndo());
-			setCanRedo(props.tps.hasTransactionToRedo());
-		}
-	}
+    const tpsRedo = async () => {
+        const ret = await props.tps.doTransaction();
+        if (ret) {
+            setCanUndo(props.tps.hasTransactionToUndo());
+            setCanRedo(props.tps.hasTransactionToRedo());
+        }
+    }
 
     const clearTps = async () => {
-		const ret = props.tps.clearAllTransactions();
-		if(ret){
-			setCanUndo(false);
-			setCanRedo(false);
-		}
-	}
+        const ret = props.tps.clearAllTransactions();
+        if (ret) {
+            setCanUndo(false);
+            setCanRedo(false);
+        }
+    }
 
     const clickDisabled = () => { };
 
     const undoOptions = {
-        className: !props.canUndo ? ' table-header-button-disabled ' : 'table-header-button',
-        onClick: !props.canUndo  ? clickDisabled : props.undo,
-        wType: "texted", 
-        clickAnimation: !props.canUndo ? "" : "ripple-light",  
+        className: !canUndo ? ' table-header-button-disabled ' : 'table-header-button',
+        onClick: !canUndo ? clickDisabled : tpsUndo,
+        wType: "texted",
+        clickAnimation: !canUndo ? "" : "ripple-light",
         shape: "rounded"
     }
 
     const redoOptions = {
-        className: !props.canRedo ? ' table-header-button-disabled ' : 'table-header-button ',
-        onClick: !props.canRedo   ? clickDisabled : props.redo, 
-        wType: "texted", 
-        clickAnimation: !props.canRedo ? "" : "ripple-light" ,
+        className: !canRedo ? ' table-header-button-disabled ' : 'table-header-button ',
+        onClick: !canRedo ? clickDisabled : tpsRedo,
+        wType: "texted",
+        clickAnimation: !canRedo ? "" : "ripple-light",
         shape: "rounded"
     }
 
@@ -118,6 +160,30 @@ const Regionviewer = (props) => {
     const activeListLength = activeList._id ? activeList.subregions.length : 0;
     const parentRegion = activeList._id ? maps.find(map => map._id === activeList.parent) : "No Parent Region";
 
+    const setParents = async () => {
+        let allParents = [];
+        allParents.push(parentRegion);
+        let currentParent = parentRegion.parent;
+        while (currentParent !== 'Untitled') {
+            let tempParent = maps.find(map => map._id === currentParent)
+            for (let id of tempParent.subregions) {
+                if (id !== parentRegion._id) {
+                    let temp = maps.find(map => map._id === id);
+                    allParents.push(temp);
+                }
+            }
+            allParents.push(tempParent);
+            currentParent = tempParent.parent;
+        }
+        setPossibleParents(allParents);
+        console.log(allParents);
+    }
+
+    const showOptions = () => {
+        setParents();
+        toggleShowParents(true);
+    }
+
     return (
 
         <WLayout wLayout="header-lside" className="regionviewer-columns">
@@ -125,15 +191,20 @@ const Regionviewer = (props) => {
                 <WNavbar color="colored">
                     <ul>
                         <WNavItem>
-                            <Logo className='logo' />
+                            <Logo className='logo' clearTransactions={clearTps} />
                         </WNavItem>
                     </ul>
 
-                    <ul className = "ancestor"> 
-					{activeList && data && <Ancestors maps= {maps} clearTransactions = {clearTps}/>}
-					</ul>
-					
-					<ul></ul>
+                    <ul className="ancestor">
+                        {activeList && data && <Ancestors maps={maps} clearTransactions={clearTps} />}
+                    </ul>
+
+                    <ul><WNavItem>
+                        <WButton className={"subregion-button"}>
+                            <i className="material-icons">arrow_back</i>
+                            <i className="material-icons">arrow_forward</i>
+                        </WButton>
+                    </WNavItem></ul>
 
                     <ul>
                         <NavbarOptions
@@ -146,8 +217,8 @@ const Regionviewer = (props) => {
             </WLHeader>
 
             <WLSide className="regionviewer-lside">
-                <WButton className={"subregion-button"} {...undoOptions}> <i className="material-icons" onClick = {tpsUndo}>undo</i></WButton>
-                <WButton className={"subregion-button"} {...redoOptions}> <i className="material-icons" onClick = {tpsRedo}>redo</i></WButton>
+                <WButton className={"subregion-button"} {...undoOptions}> <i className="material-icons" onClick={tpsUndo}>undo</i></WButton>
+                <WButton className={"subregion-button"} {...redoOptions}> <i className="material-icons" onClick={tpsRedo}>redo</i></WButton>
                 <WCard> image.png</WCard>
                 <div className="regionviewer-information">
                     {"Region Name: " + activeList.name}
@@ -155,8 +226,10 @@ const Regionviewer = (props) => {
 
                 <div className="regionviewer-information">
                     <span> Parent Region: </span>
-                    <span onClick={navigateToSpreadsheet} className = "regionviewer-parent"> {parentRegion.name} </span>
-                    <span> <WButton className={"subregion-button"}> <i className="material-icons">edit</i></WButton> </span>
+                    {showParents ? <span> <RegionviewerParent possibleParents = {possibleParents} toggleShowParents = {toggleShowParents} changeParent = {changeParent} activeList = {activeList} parentRegion = {parentRegion}/></span>:
+                        <span onClick={navigateToSpreadsheet} className="regionviewer-parent"> {parentRegion.name} </span>
+                    }
+                    <span> <WButton className={"subregion-button"}> <i className="material-icons" onClick={showOptions}>edit</i></WButton> </span>
                 </div>
 
                 <div className="regionviewer-information">
@@ -177,17 +250,17 @@ const Regionviewer = (props) => {
                 <div className="landmark-header"> Region Landmarks: </div>
                 <WCard className="landmark-table" wLayout="content-footer">
                     <WCContent>
-                        
+
                     </WCContent>
-                    <WCFooter className = "landmark-table-footer">
+                    <WCFooter className="landmark-table-footer">
                         <WRow>
-                            <WCol size = "1">
+                            <WCol size="1">
                                 <WButton className={"subregion-button"}> <i className="material-icons">add</i></WButton>
                             </WCol>
-                            <WCol size = "11">
-                            <WInput className = "landmark-table-input">
+                            <WCol size="11">
+                                <WInput className="landmark-table-input">
 
-                            </WInput>
+                                </WInput>
                             </WCol>
                         </WRow>
                     </WCFooter>

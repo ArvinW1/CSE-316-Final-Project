@@ -238,6 +238,27 @@ export class UpdateMap_Transaction extends jsTPS_Transaction{
     }
 }
 
+export class ChangeParent_Transaction extends jsTPS_Transaction{
+    constructor(parentId, regionId, newParentId, callback){
+        super();
+        this.parentId = parentId;
+        this.regionId = regionId;
+        this.newParentId = newParentId;
+        this.function = callback;
+    }
+
+    async doTransaction(){
+        console.log(this.regionId)
+        const {data} = await this.function({variables: {parentId: this.parentId, regionId: this.regionId, newParentId: this.newParentId}});
+        return data
+    }
+
+    async undoTransaction(){
+        const {data} = await this.function({variables: {parentId: this.newParentId, regionId: this.regionId, newParentId: this.parentId}});
+        return data
+    }
+}
+
 
 
 
