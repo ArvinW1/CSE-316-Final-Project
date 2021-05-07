@@ -15,6 +15,8 @@ const Regionviewer = (props) => {
     const [showLogin, toggleShowLogin] = useState(false);
     const [showCreate, toggleShowCreate] = useState(false);
     const [showUpdate, toggleShowUpdate] = useState(false);
+    const [canUndo, setCanUndo] = useState(false);
+	const [canRedo, setCanRedo] = useState(false);
 
     let maps = [];
 
@@ -41,6 +43,48 @@ const Regionviewer = (props) => {
     const loadMap = (list) => {
         props.tps.clearAllTransactions();
         setActiveList(list);
+    }
+
+    const tpsUndo = async () => {
+		const ret = await props.tps.undoTransaction();
+		if (ret) {
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
+		}
+	}
+
+	const tpsRedo = async () => {
+		const ret = await props.tps.doTransaction();
+		if (ret) {
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
+		}
+	}
+
+    const clearTps = async () => {
+		const ret = props.tps.clearAllTransactions();
+		if(ret){
+			setCanUndo(false);
+			setCanRedo(false);
+		}
+	}
+
+    const clickDisabled = () => { };
+
+    const undoOptions = {
+        className: !props.canUndo ? ' table-header-button-disabled ' : 'table-header-button',
+        onClick: !props.canUndo  ? clickDisabled : props.undo,
+        wType: "texted", 
+        clickAnimation: !props.canUndo ? "" : "ripple-light",  
+        shape: "rounded"
+    }
+
+    const redoOptions = {
+        className: !props.canRedo ? ' table-header-button-disabled ' : 'table-header-button ',
+        onClick: !props.canRedo   ? clickDisabled : props.redo, 
+        wType: "texted", 
+        clickAnimation: !props.canRedo ? "" : "ripple-light" ,
+        shape: "rounded"
     }
 
     const setShowLogin = () => {
@@ -86,7 +130,7 @@ const Regionviewer = (props) => {
                     </ul>
 
                     <ul className = "ancestor"> 
-					{activeList && data && <Ancestors maps= {maps} />}
+					{activeList && data && <Ancestors maps= {maps} clearTransactions = {clearTps}/>}
 					</ul>
 					
 					<ul></ul>
@@ -102,8 +146,8 @@ const Regionviewer = (props) => {
             </WLHeader>
 
             <WLSide className="regionviewer-lside">
-                <WButton className={"subregion-button"}> <i className="material-icons">undo</i></WButton>
-                <WButton className={"subregion-button"}> <i className="material-icons">redo</i></WButton>
+                <WButton className={"subregion-button"} {...undoOptions}> <i className="material-icons" onClick = {tpsUndo}>undo</i></WButton>
+                <WButton className={"subregion-button"} {...redoOptions}> <i className="material-icons" onClick = {tpsRedo}>redo</i></WButton>
                 <WCard> image.png</WCard>
                 <div className="regionviewer-information">
                     {"Region Name: " + activeList.name}
