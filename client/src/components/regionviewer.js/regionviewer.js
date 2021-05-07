@@ -35,6 +35,8 @@ const Regionviewer = (props) => {
     const [showUpdate, toggleShowUpdate] = useState(false);
     const [possibleParents, setPossibleParents] = useState({});
     const [showParents, toggleShowParents] = useState(false);
+    const [location, setLocation] = useState({});
+    const [subSize, setSubSize] = useState({});
     const [canUndo, setCanUndo] = useState(false);
     const [canRedo, setCanRedo] = useState(false);
 
@@ -53,6 +55,11 @@ const Regionviewer = (props) => {
         if (!activeList._id) {
             const currentList = maps.find(map => map._id === props.match.params._id)
             setActiveList(currentList)
+            let tempId = currentList.parent;
+            let parent = maps.find(map => map._id === tempId);
+            let parentSub = parent.subregions;
+            setLocation(parentSub.indexOf(currentList._id))
+            setSubSize(parentSub.length)
         }
     }
 
@@ -61,6 +68,11 @@ const Regionviewer = (props) => {
 			let tempID = props.match.params._id;
 			let map = maps.find(map => map._id === tempID);
 			setActiveList(map);
+            let tempId = map.parent;
+            let parent = maps.find(map => map._id === tempId);
+            let parentSub = parent.subregions;
+            setLocation(parentSub.indexOf(map._id))
+            setSubSize(parentSub.length)
 		}
 	}
 	const mutationOptions = {
@@ -155,7 +167,7 @@ const Regionviewer = (props) => {
         toggleShowLogin(false);
         toggleShowDelete(false);
         toggleShowUpdate(!showUpdate)
-    }
+    };
 
     const activeListLength = activeList._id ? activeList.subregions.length : 0;
     const parentRegion = activeList._id ? maps.find(map => map._id === activeList.parent) : "No Parent Region";
@@ -184,6 +196,21 @@ const Regionviewer = (props) => {
         toggleShowParents(true);
     }
 
+    const moveForward = () =>{
+        console.log(location)
+        if(location !== (subSize - 1)){
+            props.history.push("/Regionviewer/" + parentRegion.subregions[location+1]);
+            props.tps.clearAllTransactions();
+        }
+    }
+
+    const moveBack = () =>{
+        if(location !== 0){
+            props.history.push("/Regionviewer/" + parentRegion.subregions[location-1]);
+            props.tps.clearAllTransactions();
+        }
+    }
+
     return (
 
         <WLayout wLayout="header-lside" className="regionviewer-columns">
@@ -201,8 +228,8 @@ const Regionviewer = (props) => {
 
                     <ul><WNavItem>
                         <WButton className={"subregion-button"}>
-                            <i className="material-icons">arrow_back</i>
-                            <i className="material-icons">arrow_forward</i>
+                            <i className="material-icons" onClick = {moveBack}>arrow_back</i>
+                            <i className="material-icons"onClick = {moveForward}>arrow_forward</i>
                         </WButton>
                     </WNavItem></ul>
 
