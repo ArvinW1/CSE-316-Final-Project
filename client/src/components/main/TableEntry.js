@@ -20,7 +20,7 @@ const TableEntry = (props) => {
     const disabledButton = () => { }
 
     const handleNameEdit = (e) => {
-        toggleNameEdit(false);
+        props.toggleName(false);
         const newName = e.target.value ? e.target.value : "Not Named";
         const prevName = name;
         if (newName !== prevName) {
@@ -30,7 +30,7 @@ const TableEntry = (props) => {
     };
 
     const handleCapitalEdit = (e) => {
-            toggleCapitalEdit(false);
+            props.toggleCapital(false);
             const newCap = e.target.value ? e.target.value : "No Capital";
             const prevCap = capital;
             if (newCap !== prevCap) {
@@ -39,7 +39,7 @@ const TableEntry = (props) => {
     };
 
     const handleLeaderEdit = (e) => {
-            toggleLeaderEdit(false);
+            props.toggleLeader(false);
             const newLeader = e.target.value ? e.target.value : "No Leader";
             const prevLeader = leader;
             if (newLeader !== prevLeader) {
@@ -61,7 +61,7 @@ const TableEntry = (props) => {
     const doubleClick = () =>{
         clearTimeout(timer);
         trigger = false;
-        toggleNameEdit(true);
+        props.setShowNameInput(props.index)
     }
 
     const navigateToViewer = () => {
@@ -76,14 +76,14 @@ const TableEntry = (props) => {
             </WCol>
             <WCol size="3">
                 {
-                    editingName
+                    props.showNameInput && props.show
                         ? <WInput
                             className='table-input' onBlur={handleNameEdit}
                             onKeyDown={(e) => { if (e.keyCode === 13) handleNameEdit(e) }}
                             autoFocus={true} type='text'
                             inputClass="table-input-class" defaultValue = {name}
                         />
-                        : <div className="table-text" onClick={MoveToNewSub} onDoubleClick = {doubleClick}>
+                        : <div className="table-text" onClick={(MoveToNewSub)} onDoubleClick = {doubleClick}>
                             {name}
                         </div>
                 }
@@ -91,13 +91,13 @@ const TableEntry = (props) => {
 
             <WCol size="2">
                 {
-                    editingCaptial ? <WInput
+                    props.showCapitalInput && props.show ? <WInput
                         className='table-input' onBlur={handleCapitalEdit}
                         onKeyDown={(e) => { if (e.keyCode === 13) handleCapitalEdit(e) }}
                         autoFocus={true} type='text'
                         inputclass="table-input-class" defaultValue = {capital}
                     />
-                        : <div className="table-text" onClick = {() => toggleCapitalEdit(true)}>
+                        : <div className="table-text" onClick = {() => props.setShowCapitalInput(props.index)}>
                             {capital}
                         </div>
                 }
@@ -105,14 +105,14 @@ const TableEntry = (props) => {
 
             <WCol size="2">
                 {
-                    editingLeader ? <WInput
+                    props.showLeaderInput && props.show  ? <WInput
                         className='table-input' onBlur={handleLeaderEdit}
                         onKeyDown={(e) => { if (e.keyCode === 13) handleLeaderEdit(e) }}
                         autoFocus={true} type='text'
                         inputclass="table-input-class" defaultValue = {leader}
                     >
                     </WInput>
-                        : <div className={`table-text`} onClick = {() => toggleLeaderEdit(true)}>
+                        : <div className={`table-text`} onClick = {() => props.setShowLeaderInput(props.index)}>
                             {leader}
                         </div>
                 }

@@ -15,20 +15,6 @@ import Ancestors from '../navbar/Ancestors';
 
 function Spreadsheet(props) {
 
-	const keyCombination = (e, callback) => {
-		if (e.key === 'z' && e.ctrlKey) {
-			if (props.tps.hasTransactionToUndo()) {
-				tpsUndo();
-			}
-		}
-		else if (e.key === 'y' && e.ctrlKey) {
-			if (props.tps.hasTransactionToRedo()) {
-				tpsRedo();
-			}
-		}
-	}
-	document.onkeydown = keyCombination;
-
 	const [showDelete, toggleShowDelete] = useState(false);
 	const [showLogin, toggleShowLogin] = useState(false);
 	const [showCreate, toggleShowCreate] = useState(false);
@@ -37,8 +23,16 @@ function Spreadsheet(props) {
 	const [currentRegions, SetCurrentRegions] = useState({});
 	const [region, setRegion] = useState({});
 	const [index, setIndex] = useState({});
+	const [currentIndex, setCurrentIndex] = useState({});
+	const [showNameInput, toggleNameInput] = useState(false);
+	const [showCapitalInput, toggleCapitalInput] = useState(false);
+	const [showLeaderInput, toggleLeaderInput] = useState(false);
 	const [canUndo, setCanUndo] = useState(false);
 	const [canRedo, setCanRedo] = useState(false);
+
+	
+
+	
 
 	let maps = [];
 
@@ -65,6 +59,49 @@ function Spreadsheet(props) {
 		}
 	}
 	//See if it is subregion by checking if currentlist is null/undefined
+
+	const keyCombination = (e, callback) => {
+		if (e.key === 'z' && e.ctrlKey) {
+			if (props.tps.hasTransactionToUndo()) {
+				tpsUndo();
+			}
+		}
+		else if (e.key === 'y' && e.ctrlKey) {
+			if (props.tps.hasTransactionToRedo()) {
+				tpsRedo();
+			}
+		}else if (e.keyCode === 37){ // Left Arrow - 37
+			if(showCapitalInput){
+				toggleNameInput(true)
+				toggleCapitalInput(false)
+				toggleLeaderInput(false)
+			}else if(showLeaderInput){
+				toggleNameInput(false)
+				toggleCapitalInput(true)
+				toggleLeaderInput(false)
+			}
+		}else if(e.keyCode === 39){ // Right Arrow - 39
+			if(showCapitalInput){
+				toggleNameInput(false);
+				toggleCapitalInput(false);
+				toggleLeaderInput(true);
+			}else if(showNameInput){
+				toggleNameInput(false);
+				toggleCapitalInput(true);
+				toggleLeaderInput(false);
+			}
+		}
+		else if(e.keyCode === 38){//Up Arrow - 38
+			if(currentIndex !== 0){
+				setCurrentIndex(currentIndex -1);
+			}
+		}else if(e.keyCode === 40){//Down arrow - 40
+			if(currentIndex !== currentRegions.length -1){
+				setCurrentIndex(currentIndex + 1);
+			}
+		}
+	}
+	document.onkeydown = keyCombination;
 
 	const auth = props.user === null ? false : true;
 
@@ -209,6 +246,25 @@ function Spreadsheet(props) {
 		toggleShowLogin(false);
 		toggleShowDelete(false);
 		toggleShowUpdate(!showUpdate)
+	};
+
+	const setShowNameInput = (index) =>{
+		toggleNameInput(true);
+		toggleCapitalInput(false);
+		toggleLeaderInput(false);
+		setCurrentIndex(index)
+	}
+	const setShowCapitalInput = (index) =>{
+		toggleNameInput(false);
+		toggleCapitalInput(true);
+		toggleLeaderInput(false);
+		setCurrentIndex(index)
+	}
+	const setShowLeaderInput = (index) =>{
+		toggleNameInput(false);
+		toggleCapitalInput(false);
+		toggleLeaderInput(true);
+		setCurrentIndex(index)
 	}
 
 	return (
@@ -242,7 +298,10 @@ function Spreadsheet(props) {
 					activeList={activeList} addNewSubregion={addSubregion} currentRegions={currentRegions}
 					reloadList={reloadList} editMap={editMap} setShowDelete={setShowDelete} 
 					undo={tpsUndo} redo={tpsRedo} canUndo={canUndo} canRedo={canRedo} clearTransactions = {clearTps}
-					sort = {sort}
+					sort = {sort} 
+					showNameInput = {showNameInput} showCapitalInput = {showCapitalInput} showLeaderInput = {showLeaderInput}
+					toggleName = {toggleNameInput} toggleCapital = {toggleCapitalInput} toggleLeader = {toggleLeaderInput} index = {currentIndex}
+					setShowCapitalInput = {setShowCapitalInput} setShowLeaderInput = {setShowLeaderInput} setShowNameInput = {setShowNameInput}
 				/>
 			</WLMain>
 
