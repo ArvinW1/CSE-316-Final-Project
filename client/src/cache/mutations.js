@@ -176,3 +176,25 @@ export const CHANGE_PARENT = gql`
 		changeParent(parentId: $parentId, regionId: $regionId, newParentId: $newParentId)
 	}
 `;
+
+export const ADD_LANDMARK = gql`
+	mutation AddLandmark($_id: String!, $landmark: LandmarkInput, $index: Int!){
+		addLandmark(_id: $_id, landmark: $landmark, index: $index)
+	}
+`;
+
+export const DELETE_LANDMARK = gql`
+	mutation DeleteLandmark($_id: String!, $landmarkId: String!){
+		deleteLandmark(_id: $_id, landmarkId: $landmarkId)
+	}
+`;
+
+export const UPDATE_LANDMARK = gql`
+	mutation UpdateLandmark($_id: String!, $landmarkId: String!, $value: String!){
+		updateLandmark(_id: $_id, landmarkId: $landmarkId, value: $value){
+			_id
+			name
+			location
+		}
+	}
+`;

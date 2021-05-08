@@ -29,6 +29,9 @@ const typeDefs = gql `
         deleteSubregion(_id: String!, subID: String!): Boolean
         sortMaps(_id: String!, criteria: String!, opcode: Int!, regionIDs: [String], direction: Int!): [String]
         changeParent(parentId: String!, regionId: String!, newParentId: String!): String
+        addLandmark(_id: String!, landmark: LandmarkInput, index: Int!): String
+        deleteLandmark(_id: String!, landmarkId: String!): Boolean
+        updateLandmark(_id: String!, landmarkId: String!, value: String!): [Landmark]
     }
     input MapInput {
         _id: String!
