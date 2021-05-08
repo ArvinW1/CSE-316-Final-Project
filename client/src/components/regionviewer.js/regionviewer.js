@@ -10,6 +10,7 @@ import Ancestors from '../navbar/Ancestors';
 import RegionviewerParent from './RegionviewerParent';
 import * as mutations from '../../cache/mutations';
 import { ChangeParent_Transaction } from '../../utils/jsTPS';
+import RegionInput from './RegionInput';
 
 const Regionviewer = (props) => {
 
@@ -64,30 +65,29 @@ const Regionviewer = (props) => {
     }
 
     const reloadList = async () => {
-		if (activeList._id) {
-			let tempID = props.match.params._id;
-			let map = maps.find(map => map._id === tempID);
-			setActiveList(map);
+        if (activeList._id) {
+            let tempID = props.match.params._id;
+            let map = maps.find(map => map._id === tempID);
+            setActiveList(map);
             let tempId = map.parent;
             let parent = maps.find(map => map._id === tempId);
             let parentSub = parent.subregions;
             setLocation(parentSub.indexOf(map._id))
             setSubSize(parentSub.length)
-		}
-	}
-	const mutationOptions = {
-		refetchQueries: [{ query: GET_DB_MAP }],
-		awaitRefetchQueries: true,
-		onCompleted: () => reloadList()
-	}
+        }
+    }
+    const mutationOptions = {
+        refetchQueries: [{ query: GET_DB_MAP }],
+        awaitRefetchQueries: true,
+        onCompleted: () => reloadList()
+    }
 
     const [ChangeParent] = useMutation(mutations.CHANGE_PARENT, mutationOptions)
 
-    const changeParent = async(newParentId) =>{
-        console.log("hello")
+    const changeParent = async (newParentId) => {
         let transaction = new ChangeParent_Transaction(activeList.parent, activeList._id, newParentId, ChangeParent)
         props.tps.addTransaction(transaction)
-		tpsRedo();
+        tpsRedo();
     }
 
     const navigateToSpreadsheet = () => {
@@ -196,17 +196,17 @@ const Regionviewer = (props) => {
         toggleShowParents(true);
     }
 
-    const moveForward = () =>{
+    const moveForward = () => {
         console.log(location)
-        if(location !== (subSize - 1)){
-            props.history.push("/Regionviewer/" + parentRegion.subregions[location+1]);
+        if (location !== (subSize - 1)) {
+            props.history.push("/Regionviewer/" + parentRegion.subregions[location + 1]);
             props.tps.clearAllTransactions();
         }
     }
 
-    const moveBack = () =>{
-        if(location !== 0){
-            props.history.push("/Regionviewer/" + parentRegion.subregions[location-1]);
+    const moveBack = () => {
+        if (location !== 0) {
+            props.history.push("/Regionviewer/" + parentRegion.subregions[location - 1]);
             props.tps.clearAllTransactions();
         }
     }
@@ -228,8 +228,8 @@ const Regionviewer = (props) => {
 
                     <ul><WNavItem>
                         <WButton className={"subregion-button"}>
-                            <i className="material-icons" onClick = {moveBack}>arrow_back</i>
-                            <i className="material-icons"onClick = {moveForward}>arrow_forward</i>
+                            <i className="material-icons" onClick={moveBack}>arrow_back</i>
+                            <i className="material-icons" onClick={moveForward}>arrow_forward</i>
                         </WButton>
                     </WNavItem></ul>
 
@@ -253,8 +253,14 @@ const Regionviewer = (props) => {
 
                 <div className="regionviewer-information">
                     <span> Parent Region: </span>
-                    {showParents ? <span> <RegionviewerParent possibleParents = {possibleParents} toggleShowParents = {toggleShowParents} changeParent = {changeParent} activeList = {activeList} parentRegion = {parentRegion}/></span>:
-                        <span onClick={navigateToSpreadsheet} className="regionviewer-parent"> {parentRegion.name} </span>
+                    {showParents ?
+                        <span>
+                            <RegionviewerParent possibleParents={possibleParents} toggleShowParents={toggleShowParents}
+                                changeParent={changeParent} activeList={activeList} parentRegion={parentRegion} />
+                        </span> :
+                        <span onClick={navigateToSpreadsheet} className="regionviewer-parent">
+                            {parentRegion.name}
+                        </span>
                     }
                     <span> <WButton className={"subregion-button"}> <i className="material-icons" onClick={showOptions}>edit</i></WButton> </span>
                 </div>
@@ -280,16 +286,7 @@ const Regionviewer = (props) => {
 
                     </WCContent>
                     <WCFooter className="landmark-table-footer">
-                        <WRow>
-                            <WCol size="1">
-                                <WButton className={"subregion-button"}> <i className="material-icons">add</i></WButton>
-                            </WCol>
-                            <WCol size="11">
-                                <WInput className="landmark-table-input">
-
-                                </WInput>
-                            </WCol>
-                        </WRow>
+                        <RegionInput/>
                     </WCFooter>
                 </WCard>
 

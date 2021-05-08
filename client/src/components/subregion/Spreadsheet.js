@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { WCol, WLayout, WLHeader, WNavbar, WNavItem, WRow } from 'wt-frontend';
+import {WLayout, WLHeader, WNavbar, WNavItem} from 'wt-frontend';
 import NavbarOptions from '../navbar/NavbarOptions';
 import UpdateAccount from '../modals/UpdateAccount';
 import Delete from '../modals/Delete';
@@ -10,7 +10,7 @@ import { GET_DB_MAP } from '../../cache/queries';
 import WLMain from 'wt-frontend/build/components/wmodal/WMMain';
 import MainContents from '../main/MainContents';
 import * as mutations from '../../cache/mutations';
-import { EditMap_Transaction, SortMaps_Transaction, UpdateListItems_Transaction, UpdateMap_Transaction } from '../../utils/jsTPS';
+import { EditMap_Transaction, SortMaps_Transaction, UpdateMap_Transaction } from '../../utils/jsTPS';
 import Ancestors from '../navbar/Ancestors';
 
 function Spreadsheet(props) {
@@ -29,10 +29,6 @@ function Spreadsheet(props) {
 	const [showLeaderInput, toggleLeaderInput] = useState(false);
 	const [canUndo, setCanUndo] = useState(false);
 	const [canRedo, setCanRedo] = useState(false);
-
-	
-
-	
 
 	let maps = [];
 
