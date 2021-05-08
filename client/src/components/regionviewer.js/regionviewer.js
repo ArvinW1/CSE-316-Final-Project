@@ -9,7 +9,7 @@ import UpdateAccount from '../modals/UpdateAccount';
 import Ancestors from '../navbar/Ancestors';
 import RegionviewerParent from './RegionviewerParent';
 import * as mutations from '../../cache/mutations';
-import { ChangeParent_Transaction, UpdateLandmark_Transaction } from '../../utils/jsTPS';
+import { ChangeParent_Transaction, UpdateLandmark_Transaction, EditLandmark_Transaction } from '../../utils/jsTPS';
 import RegionInput from './RegionInput';
 import RegionLandmark from './RegionLandmark';
 
@@ -86,6 +86,7 @@ const Regionviewer = (props) => {
     const [ChangeParent] = useMutation(mutations.CHANGE_PARENT, mutationOptions)
     const [AddLandmark] = useMutation(mutations.ADD_LANDMARK, mutationOptions)
     const [DeleteLandmark] = useMutation(mutations.DELETE_LANDMARK, mutationOptions)
+    const [updateLandmark] = useMutation(mutations.UPDATE_LANDMARK, mutationOptions)
 
     const changeParent = async (newParentId) => {
         let transaction = new ChangeParent_Transaction(activeList.parent, activeList._id, newParentId, ChangeParent)
@@ -120,6 +121,12 @@ const Regionviewer = (props) => {
             location: currentLandmark.location
         }
         let transaction = new UpdateLandmark_Transaction(map._id, landmarkId, landmarkToDelete, opcode, AddLandmark, DeleteLandmark, index);
+        props.tps.addTransaction(transaction);
+        tpsRedo();
+    }
+
+    const editLandmark = async(landmarkId, value, prev) =>{
+        let transaction = new EditLandmark_Transaction(activeList._id, landmarkId, prev, value, updateLandmark)
         props.tps.addTransaction(transaction);
         tpsRedo();
     }
@@ -321,7 +328,7 @@ const Regionviewer = (props) => {
                 <div className="landmark-header"> Region Landmarks: </div>
                 <WCard className="landmark-table" wLayout="content-footer">
                     <WCContent className = "landmark-table-content">
-                        <RegionLandmark activeList = {activeList} deleteLandmark = {deleteLandmark}/>
+                        <RegionLandmark activeList = {activeList} deleteLandmark = {deleteLandmark} editLandmark = {editLandmark}/>
                     </WCContent>
                     <WCFooter className="landmark-table-footer">
                         <RegionInput createNewLandmark = {createNewLandmark}/>

@@ -7,7 +7,7 @@ const RegionLandmark = (props) =>{
     return(
         entries !== undefined && entries.length > 0 && <div>
             {entries.map(entry => (
-            <LandmarkContent data = {entry} key = {entry._id} deleteLandmark = {props.deleteLandmark}/>
+            <LandmarkContent data = {entry} key = {entry._id} deleteLandmark = {props.deleteLandmark} editLandmark = {props.editLandmark}/>
             ))}
         </div>
     )
