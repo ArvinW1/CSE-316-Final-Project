@@ -375,6 +375,7 @@ html {
 
 .landmark-table-content{
     overflow-y: auto;
+    min-height: 100%;
 }
 
 .landmark-table-input{
@@ -402,4 +403,5 @@ html {
     color: white;
     font-size: large;
     font-weight: bold;
+    margin-top: 11px;
 }

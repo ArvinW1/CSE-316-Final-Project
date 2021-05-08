@@ -94,7 +94,7 @@ const Regionviewer = (props) => {
     }
 
     const createNewLandmark = async (inputName) => {
-        let map = activeList
+        let map = activeList;
         let landmark = {
             _id: '',
             name: inputName,
@@ -102,6 +102,24 @@ const Regionviewer = (props) => {
         }
         let opcode = 1;
         let transaction = new UpdateLandmark_Transaction(map._id, landmark._id, landmark, opcode, AddLandmark, DeleteLandmark);
+        props.tps.addTransaction(transaction);
+        tpsRedo();
+    }
+
+    const deleteLandmark = async(landmarkId) =>{
+        let map = activeList;
+        let opcode = 0;
+        let currentLandmarks = activeList.landmarks;
+        let currentLandmark = currentLandmarks.find(landmark => landmark._id === landmarkId);
+        console.log(currentLandmark)
+        let index = activeList.landmarks.indexOf(currentLandmark)
+        console.log(index)
+        let landmarkToDelete = {
+            _id: currentLandmark._id,
+            name: currentLandmark.name,
+            location: currentLandmark.location
+        }
+        let transaction = new UpdateLandmark_Transaction(map._id, landmarkId, landmarkToDelete, opcode, AddLandmark, DeleteLandmark, index);
         props.tps.addTransaction(transaction);
         tpsRedo();
     }
@@ -302,8 +320,8 @@ const Regionviewer = (props) => {
             <WLMain>
                 <div className="landmark-header"> Region Landmarks: </div>
                 <WCard className="landmark-table" wLayout="content-footer">
-                    <WCContent>
-                        <RegionLandmark activeList = {activeList}/>
+                    <WCContent className = "landmark-table-content">
+                        <RegionLandmark activeList = {activeList} deleteLandmark = {deleteLandmark}/>
                     </WCContent>
                     <WCFooter className="landmark-table-footer">
                         <RegionInput createNewLandmark = {createNewLandmark}/>

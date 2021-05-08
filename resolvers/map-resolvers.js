@@ -192,10 +192,9 @@ module.exports = {
         deleteLandmark: async (_, args) =>{
             const {_id, landmarkId} = args;
             const regionId = new ObjectId(_id);
-            //const landmark = new ObjectId(landmarkId);
             const found = await Map.findOne({_id: regionId});
             const landmarks = found.landmarks;
-            const toDelete = landmarks.find(landmark => landmark._id === landmarkId);
+            const toDelete = landmarks.find(landmark => landmark._id.toString() === landmarkId);
             const index = landmarks.indexOf(toDelete);
             landmarks.splice(index, 1)
 
@@ -209,7 +208,7 @@ module.exports = {
             //const landmark = new ObjectId(landmarkId);
             const found = await Map.findOne({_id: regionId});
             const landmarks = found.landmarks;
-            const toUpdate = landmarks.find(landmark => landmark._id === landmarkId);
+            const toUpdate = landmarks.find(landmark => landmark._id.toString() === landmarkId);
             const index = landmarks.indexOf(toUpdate);
 
             landmarks.splice(index, 1)
