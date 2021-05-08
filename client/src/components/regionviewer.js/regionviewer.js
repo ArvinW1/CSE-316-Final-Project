@@ -328,7 +328,7 @@ const Regionviewer = (props) => {
                 <div className="landmark-header"> Region Landmarks: </div>
                 <WCard className="landmark-table" wLayout="content-footer">
                     <WCContent className = "landmark-table-content">
-                        <RegionLandmark activeList = {activeList} deleteLandmark = {deleteLandmark} editLandmark = {editLandmark}/>
+                        <RegionLandmark activeList = {activeList} deleteLandmark = {deleteLandmark} editLandmark = {editLandmark} maps = {maps}/>
                     </WCContent>
                     <WCFooter className="landmark-table-footer">
                         <RegionInput createNewLandmark = {createNewLandmark}/>

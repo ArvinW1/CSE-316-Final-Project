@@ -104,9 +104,18 @@ module.exports = {
         updateMapField: async (_, args) => {
             const { field, value, _id } = args;
             const objectId = new ObjectId(_id);
+            const found = await Map.findOne({ _id: objectId })
             const updated = await Map.updateOne({ _id: objectId }, { [field]: value });
             console.log(value)
             console.log(field)
+            if (field === 'name' && found.landmarks.length !== 0) {
+                console.log("Changing Landmark Location")
+                let tempLandmarks = found.landmarks
+                for (let landmark of tempLandmarks) {
+                    landmark.location = value;
+                }
+                const updateLandmark = await Map.updateOne({ _id: objectId }, { landmarks: tempLandmarks})
+            }
             if (updated) return value;
             else return "";
         },
@@ -167,46 +176,46 @@ module.exports = {
             const update_three = await Map.updateOne({ _id: newParent }, { subregions: newParentSubregions })
             if (update_two) return newParentId
         },
-        addLandmark: async (_, args) =>{
-            const {_id, landmark, index} = args;
+        addLandmark: async (_, args) => {
+            const { _id, landmark, index } = args;
             const regionId = new ObjectId(_id);
             const objectId = new ObjectId();
-            const found = await Map.findOne({_id: regionId})
-            if(!found) return('Map not found')
-            if(landmark._id === '') landmark._id = objectId;
+            const found = await Map.findOne({ _id: regionId })
+            if (!found) return ('Map not found')
+            if (landmark._id === '') landmark._id = objectId;
             const newLandmark = new Landmark({
                 _id: landmark._id,
-                name: landmark.name, 
+                name: landmark.name,
                 location: landmark.location
             })
             console.log(newLandmark)
             let mapLandmarks = found.landmarks;
-            if(index < 0) mapLandmarks.push(newLandmark);
+            if (index < 0) mapLandmarks.push(newLandmark);
             else mapLandmarks.splice(index, 0, newLandmark);
 
-            const updated = await Map.updateOne({_id: regionId}, {landmarks: mapLandmarks})
+            const updated = await Map.updateOne({ _id: regionId }, { landmarks: mapLandmarks })
 
-            if(updated) return (landmark._id)
-            else return('Could not add landmark')
-        }, 
-        deleteLandmark: async (_, args) =>{
-            const {_id, landmarkId} = args;
+            if (updated) return (landmark._id)
+            else return ('Could not add landmark')
+        },
+        deleteLandmark: async (_, args) => {
+            const { _id, landmarkId } = args;
             const regionId = new ObjectId(_id);
-            const found = await Map.findOne({_id: regionId});
+            const found = await Map.findOne({ _id: regionId });
             const landmarks = found.landmarks;
             const toDelete = landmarks.find(landmark => landmark._id.toString() === landmarkId);
             const index = landmarks.indexOf(toDelete);
             landmarks.splice(index, 1)
 
-            const deleted = await Map.updateOne({_id: regionId}, {landmarks: landmarks})
-            if(deleted) return true
+            const deleted = await Map.updateOne({ _id: regionId }, { landmarks: landmarks })
+            if (deleted) return true
             else return false
         },
-        updateLandmark: async(_, args) =>{
-            const {_id, landmarkId, value} = args;
+        updateLandmark: async (_, args) => {
+            const { _id, landmarkId, value } = args;
             const regionId = new ObjectId(_id);
             //const landmark = new ObjectId(landmarkId);
-            const found = await Map.findOne({_id: regionId});
+            const found = await Map.findOne({ _id: regionId });
             const landmarks = found.landmarks;
             const toUpdate = landmarks.find(landmark => landmark._id.toString() === landmarkId);
             const index = landmarks.indexOf(toUpdate);
@@ -215,8 +224,8 @@ module.exports = {
             toUpdate.name = value;
             landmarks.splice(index, 0, toUpdate)
 
-            const updated = await Map.updateOne({_id: regionId}, {landmarks: landmarks})
-            if(updated) return landmarks
+            const updated = await Map.updateOne({ _id: regionId }, { landmarks: landmarks })
+            if (updated) return landmarks
             else return found.landmarks
         }
     }
