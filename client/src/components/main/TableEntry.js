@@ -9,13 +9,10 @@ const TableEntry = (props) => {
     const name = data.name;
     const capital = data.capital;
     const leader = data.leader
-    const landmarks = data.landmarks.length === 0 ? "No Landmarks" : data.landmarks;
+    let temp = data.landmarks.map(landmark => landmark.name)
+    const landmarks = data.landmarks.length === 0 ? "No Landmarks" : temp;
     let timer = null;
     let trigger = false;
-
-    const [editingName, toggleNameEdit] = useState(false);
-    const [editingCaptial, toggleCapitalEdit] = useState(false);
-    const [editingLeader, toggleLeaderEdit] = useState(false);
 
     const disabledButton = () => { }
 

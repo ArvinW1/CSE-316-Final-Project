@@ -9,8 +9,9 @@ import UpdateAccount from '../modals/UpdateAccount';
 import Ancestors from '../navbar/Ancestors';
 import RegionviewerParent from './RegionviewerParent';
 import * as mutations from '../../cache/mutations';
-import { ChangeParent_Transaction } from '../../utils/jsTPS';
+import { ChangeParent_Transaction, UpdateLandmark_Transaction } from '../../utils/jsTPS';
 import RegionInput from './RegionInput';
+import RegionLandmark from './RegionLandmark';
 
 const Regionviewer = (props) => {
 
@@ -83,6 +84,8 @@ const Regionviewer = (props) => {
     }
 
     const [ChangeParent] = useMutation(mutations.CHANGE_PARENT, mutationOptions)
+    const [AddLandmark] = useMutation(mutations.ADD_LANDMARK, mutationOptions)
+    const [DeleteLandmark] = useMutation(mutations.DELETE_LANDMARK, mutationOptions)
 
     const changeParent = async (newParentId) => {
         let transaction = new ChangeParent_Transaction(activeList.parent, activeList._id, newParentId, ChangeParent)
@@ -90,8 +93,17 @@ const Regionviewer = (props) => {
         tpsRedo();
     }
 
-    const navigateToSpreadsheet = () => {
-        props.history.push("/Spreadsheet/" + parentRegion._id)
+    const createNewLandmark = async (inputName) => {
+        let map = activeList
+        let landmark = {
+            _id: '',
+            name: inputName,
+            location: activeList.name
+        }
+        let opcode = 1;
+        let transaction = new UpdateLandmark_Transaction(map._id, landmark._id, landmark, opcode, AddLandmark, DeleteLandmark);
+        props.tps.addTransaction(transaction);
+        tpsRedo();
     }
 
     const loadMap = (list) => {
@@ -196,6 +208,10 @@ const Regionviewer = (props) => {
         toggleShowParents(true);
     }
 
+    const navigateToSpreadsheet = () => {
+        props.history.push("/Spreadsheet/" + parentRegion._id)
+    }
+
     const moveForward = () => {
         console.log(location)
         if (location !== (subSize - 1)) {
@@ -229,6 +245,10 @@ const Regionviewer = (props) => {
                     <ul><WNavItem>
                         <WButton className={"subregion-button"}>
                             <i className="material-icons" onClick={moveBack}>arrow_back</i>
+                        </WButton>
+                    </WNavItem>
+                    <WNavItem>
+                        <WButton className={"subregion-button"}>
                             <i className="material-icons" onClick={moveForward}>arrow_forward</i>
                         </WButton>
                     </WNavItem></ul>
@@ -283,10 +303,10 @@ const Regionviewer = (props) => {
                 <div className="landmark-header"> Region Landmarks: </div>
                 <WCard className="landmark-table" wLayout="content-footer">
                     <WCContent>
-
+                        <RegionLandmark activeList = {activeList}/>
                     </WCContent>
                     <WCFooter className="landmark-table-footer">
-                        <RegionInput/>
+                        <RegionInput createNewLandmark = {createNewLandmark}/>
                     </WCFooter>
                 </WCard>
 

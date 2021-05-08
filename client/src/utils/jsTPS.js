@@ -238,6 +238,43 @@ export class UpdateMap_Transaction extends jsTPS_Transaction{
     }
 }
 
+export class UpdateLandmark_Transaction extends jsTPS_Transaction{
+    constructor(mapID,landmarkId, landmark, opcode, addfunc, delfunc, index = -1) {
+        super();
+        this.mapID = mapID;
+		this.landmarkId = landmarkId;
+		this.landmark = landmark;
+        this.addFunction = addfunc;
+        this.deleteFunction = delfunc;
+        this.opcode = opcode;
+        this.index = index;
+    }
+
+    async doTransaction() {
+		let data;
+        this.opcode === 0 ? { data } = await this.deleteFunction({
+							variables: {_id: this.mapID, landmarkId: this.landmarkId}})
+						  : { data } = await this.addFunction({
+							variables: {landmark: this.landmark, _id: this.mapID, index: this.index}})  
+		if(this.opcode !== 0) {
+            this.landmark._id = this.landmarkId = data.addLandmark;
+		}
+		return data;
+    }
+
+    async undoTransaction(){
+        let data;
+        this.opcode === 1 ? { data } = await this.deleteFunction({
+							variables: {_id: this.mapID, landmarkId: this.landmarkId}})
+						  : { data } = await this.addFunction({
+							variables: {landmark: this.landmark, _id: this.mapID, index: this.index}})  
+		if(this.opcode !== 1) {
+            this.landmark._id = this.landmarkId = data.addLandmark;
+		}
+		return data;
+    }
+}
+
 export class ChangeParent_Transaction extends jsTPS_Transaction{
     constructor(parentId, regionId, newParentId, callback){
         super();

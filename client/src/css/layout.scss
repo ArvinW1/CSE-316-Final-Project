@@ -366,7 +366,7 @@ html {
 .landmark-table{
     min-width: 80%;
     min-height: 80%;
-    background-color: black;
+    background-color: rgb(31, 31, 31);
 }
 
 .landmark-table-footer{
@@ -387,7 +387,7 @@ html {
     width: 25%;
 }
 .ancestory-arrow{
-    margin-top: 15px;
+    margin: auto;
 }
 .ancestor{
     overflow-x: auto !important; 
@@ -396,4 +396,10 @@ html {
 }
 .navbar-options-button{
     padding-top: 3px !important;
+}
+
+.landmark-content{
+    color: white;
+    font-size: large;
+    font-weight: bold;
 }
