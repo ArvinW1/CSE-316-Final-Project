@@ -31,7 +31,6 @@ const Regionviewer = (props) => {
 
     const auth = props.user === null ? false : true;
     const [activeList, setActiveList] = useState({});
-    const [showDelete, toggleShowDelete] = useState(false);
     const [showLogin, toggleShowLogin] = useState(false);
     const [showCreate, toggleShowCreate] = useState(false);
     const [showUpdate, toggleShowUpdate] = useState(false);
@@ -179,30 +178,21 @@ const Regionviewer = (props) => {
     }
 
     const setShowLogin = () => {
-        toggleShowDelete(false);
         toggleShowCreate(false);
         toggleShowUpdate(false);
         toggleShowLogin(!showLogin);
     };
 
     const setShowCreate = () => {
-        toggleShowDelete(false);
         toggleShowLogin(false);
         toggleShowUpdate(false);
         toggleShowCreate(!showCreate);
     };
 
-    const setShowDelete = () => {
-        toggleShowCreate(false);
-        toggleShowLogin(false);
-        toggleShowUpdate(false);
-        toggleShowDelete(!showDelete)
-    };
 
     const setShowUpdate = () => {
         toggleShowCreate(false);
         toggleShowLogin(false);
-        toggleShowDelete(false);
         toggleShowUpdate(!showUpdate)
     };
 
