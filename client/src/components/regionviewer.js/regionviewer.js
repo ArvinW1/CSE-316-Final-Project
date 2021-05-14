@@ -42,6 +42,8 @@ const Regionviewer = (props) => {
     const [canRedo, setCanRedo] = useState(false);
 
     let maps = [];
+    let entries = [];
+    let removedDup = [];
 
 
     const { loading, error, data, refetch } = useQuery(GET_DB_MAP)
@@ -242,6 +244,35 @@ const Regionviewer = (props) => {
         }
     }
 
+    function traverse(subregions) {
+        let tempEntries = []
+        console.log(subregions)
+        if (subregions) {
+            for (let id of subregions) {
+                let tempMap = maps.find(map => map._id === id)
+                tempEntries = tempMap.landmarks;
+                tempEntries = tempEntries.concat(traverse(tempMap.subregions))
+            }
+        }
+        return tempEntries
+    }
+
+    if(activeList._id){
+        entries = activeList.landmarks.concat(traverse(activeList.subregions))
+        for(let landmark of entries){
+            let added = false;
+            for(let exist of removedDup){
+                if(exist.name === landmark.name){
+                    added = true;
+                }
+            }
+            if(!added){
+                removedDup.push(landmark)
+            }
+        }
+        console.log(removedDup)
+    }
+
     return (
 
         <WLayout wLayout="header-lside" className="regionviewer-columns">
@@ -318,10 +349,10 @@ const Regionviewer = (props) => {
                 <div className="landmark-header"> Region Landmarks: </div>
                 <WCard className="landmark-table" wLayout="content-footer">
                     <WCContent className = "landmark-table-content">
-                        <RegionLandmark activeList = {activeList} deleteLandmark = {deleteLandmark} editLandmark = {editLandmark} maps = {maps}/>
+                        <RegionLandmark entries = {removedDup} activeList = {activeList} deleteLandmark = {deleteLandmark} editLandmark = {editLandmark} maps = {maps}/>
                     </WCContent>
                     <WCFooter className="landmark-table-footer">
-                        <RegionInput createNewLandmark = {createNewLandmark}/>
+                        <RegionInput createNewLandmark = {createNewLandmark} entries = {removedDup}/>
                     </WCFooter>
                 </WCard>
 

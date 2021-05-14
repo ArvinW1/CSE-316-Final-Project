@@ -2,24 +2,8 @@ import React, { useState } from 'react';
 import LandmarkContent from './LandmarkContent';
 
 const RegionLandmark = (props) => {
-    let entries = props.activeList.landmarks;
+    let entries = props.entries;
 
-    function traverse(subregions) {
-        let tempEntries = []
-        console.log(subregions)
-        if (subregions) {
-            for (let id of subregions) {
-                let tempMap = props.maps.find(map => map._id === id)
-                tempEntries = tempMap.landmarks;
-                tempEntries = tempEntries.concat(traverse(tempMap.subregions))
-            }
-        }
-        return tempEntries
-    }
-
-    if(props.activeList.subregions){
-        entries = entries.concat(traverse(props.activeList.subregions))
-    }
 
     return (
         entries !== undefined && entries.length > 0 && <div>

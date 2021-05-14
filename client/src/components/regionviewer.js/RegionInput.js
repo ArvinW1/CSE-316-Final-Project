@@ -6,7 +6,16 @@ const RegionInput = (props) => {
     const [input, setInput] = useState({});
 
     const handleAddLandmark = () =>{
-        props.createNewLandmark(input)
+        let existing = false;
+        for(let landmarks of props.entries){
+            if(landmarks.name === input){
+                existing = true;
+            }
+        }
+        if(!existing){
+            console.log("Added")
+            props.createNewLandmark(input)
+        }
     }
 
     return (
