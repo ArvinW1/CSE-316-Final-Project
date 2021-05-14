@@ -23,6 +23,7 @@ import SidebarList from '../sidebar/SidebarList';
 import world from '../../Images/HomepageWorld.png'
 import HomeWorld from '../../Images/PrelogGlobal.png'
 import WCContent from 'wt-frontend/build/components/wcard/WCContent';
+import Name from '../modals/Name';
 
 function Homescreen(props) {
 
@@ -36,6 +37,7 @@ function Homescreen(props) {
 	const [showLogin, toggleShowLogin] = useState(false);
 	const [showCreate, toggleShowCreate] = useState(false);
 	const [showUpdate, toggleShowUpdate] = useState(false);
+	const [showMapCreate, toggleMapCreate] = useState(false);
 	const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
@@ -104,10 +106,10 @@ function Homescreen(props) {
 		}
 	}
 
-	const createNewMap = async () => {
+	const createNewMap = async (mapName) => {
 		let map = {
 			_id: '',
-			name: 'Untitled',
+			name: mapName,
 			parent: 'Untitled',
 			capital: 'Untitled',
 			leader: 'Untitled',
@@ -198,7 +200,7 @@ function Homescreen(props) {
 					<WLMain className="centerMapMain">
 						<WCard wLayout="content-footer" className="box">
 							<WCContent className = {"homeMap"}><img src={world} alt="world" className = {"preLogGlobal"}/> </WCContent>
-							<WCFooter className="boxFooter"> <WButton color="danger" size="large" span="true" onClick={createNewMap}>Create A New Map </WButton></WCFooter>
+							<WCFooter className="boxFooter"> <WButton color="danger" size="large" span="true" onClick={() => toggleMapCreate(true)}>Create A New Map </WButton></WCFooter>
 						</WCard>
 					</WLMain>
 				</WLayout>
@@ -218,6 +220,10 @@ function Homescreen(props) {
 
 			{
 				showUpdate && (<UpdateAccount user={props.user} fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} />)
+			}
+
+			{
+				showMapCreate && (<Name createNewMap = {createNewMap} setShowMapCreate = {toggleMapCreate} showMapCreate = {showMapCreate}/>)
 			}
 
 		</WLayout>

@@ -9,7 +9,7 @@ const TableEntry = (props) => {
     const name = data.name;
     const capital = data.capital;
     const leader = data.leader
-    let temp = data.landmarks.map(landmark => landmark.name)
+    let temp = data.landmarks.map(landmark => landmark.name + " ")
     const landmarks = data.landmarks.length === 0 ? "No Landmarks" : temp;
     let timer = null;
     let trigger = false;
