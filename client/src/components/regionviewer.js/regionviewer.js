@@ -108,7 +108,7 @@ const Regionviewer = (props) => {
         tpsRedo();
     }
 
-    const deleteLandmark = async(landmarkId) =>{
+    const deleteLandmark = async (landmarkId) => {
         let map = activeList;
         let opcode = 0;
         let currentLandmarks = activeList.landmarks;
@@ -126,7 +126,7 @@ const Regionviewer = (props) => {
         tpsRedo();
     }
 
-    const editLandmark = async(landmarkId, value, prev) =>{
+    const editLandmark = async (landmarkId, value, prev) => {
         let transaction = new EditLandmark_Transaction(activeList._id, landmarkId, prev, value, updateLandmark)
         props.tps.addTransaction(transaction);
         tpsRedo();
@@ -162,6 +162,16 @@ const Regionviewer = (props) => {
     }
 
     const clickDisabled = () => { };
+
+    function importAll(flags) {
+        let images = []
+        flags.keys().map((item, index) => { images.push(item.replace('./', '')); })
+        return images
+    }
+
+    const images = importAll(require.context('../../The World', false, /\.(png|jpe?g|svg)$/));
+
+    const containsFlag = images.includes(activeList.name + " Flag.png")
 
     const undoOptions = {
         className: !canUndo ? ' table-header-button-disabled ' : 'table-header-button',
@@ -257,16 +267,16 @@ const Regionviewer = (props) => {
         return tempEntries
     }
 
-    if(activeList._id){
+    if (activeList._id) {
         entries = activeList.landmarks.concat(traverse(activeList.subregions))
-        for(let landmark of entries){
+        for (let landmark of entries) {
             let added = false;
-            for(let exist of removedDup){
-                if(exist.name === landmark.name){
+            for (let exist of removedDup) {
+                if (exist.name === landmark.name) {
                     added = true;
                 }
             }
-            if(!added){
+            if (!added) {
                 removedDup.push(landmark)
             }
         }
@@ -293,11 +303,11 @@ const Regionviewer = (props) => {
                             <i className="material-icons" onClick={moveBack}>arrow_back</i>
                         </WButton>
                     </WNavItem>
-                    <WNavItem>
-                        <WButton className={"subregion-button"}>
-                            <i className="material-icons" onClick={moveForward}>arrow_forward</i>
-                        </WButton>
-                    </WNavItem></ul>
+                        <WNavItem>
+                            <WButton className={"subregion-button"}>
+                                <i className="material-icons" onClick={moveForward}>arrow_forward</i>
+                            </WButton>
+                        </WNavItem></ul>
 
                     <ul>
                         <NavbarOptions
@@ -312,7 +322,11 @@ const Regionviewer = (props) => {
             <WLSide className="regionviewer-lside">
                 <WButton className={"subregion-button"} {...undoOptions}> <i className="material-icons" onClick={tpsUndo}>undo</i></WButton>
                 <WButton className={"subregion-button"} {...redoOptions}> <i className="material-icons" onClick={tpsRedo}>redo</i></WButton>
-                <WCard> image.png</WCard>
+                <WCard> {
+                    containsFlag ? <img src={require('../../The World/' + activeList.name + " Flag.png")} className = {"image-regionview"}></img> :
+                        <img src={require('../../The World/No Flag.png')} className = {"image-regionview"}></img>
+                }
+                </WCard>
                 <div className="regionviewer-information">
                     {"Region Name: " + activeList.name}
                 </div>
@@ -348,11 +362,11 @@ const Regionviewer = (props) => {
             <WLMain>
                 <div className="landmark-header"> Region Landmarks: </div>
                 <WCard className="landmark-table" wLayout="content-footer">
-                    <WCContent className = "landmark-table-content">
-                        <RegionLandmark entries = {removedDup} activeList = {activeList} deleteLandmark = {deleteLandmark} editLandmark = {editLandmark} maps = {maps}/>
+                    <WCContent className="landmark-table-content">
+                        <RegionLandmark entries={removedDup} activeList={activeList} deleteLandmark={deleteLandmark} editLandmark={editLandmark} maps={maps} />
                     </WCContent>
                     <WCFooter className="landmark-table-footer">
-                        <RegionInput createNewLandmark = {createNewLandmark} entries = {removedDup}/>
+                        <RegionInput createNewLandmark={createNewLandmark} entries={removedDup} />
                     </WCFooter>
                 </WCard>
 
