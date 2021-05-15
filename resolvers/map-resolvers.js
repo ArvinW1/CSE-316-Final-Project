@@ -127,22 +127,33 @@ module.exports = {
         sortMaps: async (_, args) => {
             const { _id, criteria, opcode, regionIDs, direction } = args;
             const mapID = new ObjectId(_id)
+            const map = await Map.findOne({_id: mapID})
             const regions = await Map.find({ parent: mapID })
             let newDirection = direction === 1 ? -1 : 1;
             console.log(newDirection, regions)
             let sortedMaps;
             let sortedIDs = [];
+            let sortedRegion = [];
+            let subregions = map.subregions
+            for(let regionId of subregions){
+                for(let region of regions){
+                    if(region.id === regionId){
+                        sortedRegion.push(region)
+                    }
+                }
+            }
+            console.log(sortedRegion)
 
             if (opcode === 1) {
                 switch (criteria) {
                     case 'name':
-                        sortedMaps = Sorting.byName(regions, newDirection);
+                        sortedMaps = Sorting.byName(sortedRegion, newDirection);
                         break;
                     case 'capital':
-                        sortedMaps = Sorting.byCapital(regions, newDirection);
+                        sortedMaps = Sorting.byCapital(sortedRegion, newDirection);
                         break;
                     case 'leader':
-                        sortedMaps = Sorting.byLeader(regions, newDirection);
+                        sortedMaps = Sorting.byLeader(sortedRegion, newDirection);
                         break;
                     default:
                         return regionIDs
