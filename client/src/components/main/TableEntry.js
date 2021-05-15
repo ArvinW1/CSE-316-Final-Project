@@ -14,6 +14,15 @@ const TableEntry = (props) => {
     let timer = null;
     let trigger = false;
 
+    function importAll(flags){
+        let images = []
+        flags.keys().map((item, index) => {images.push(item.replace('./', '')); })
+        return images
+    }
+
+    const images = importAll(require.context('../../The World', false, /\.(png|jpe?g|svg)$/));
+    
+    const containsFlag = images.includes(name + " Flag.png")
     const disabledButton = () => { }
 
     const handleNameEdit = (e) => {
@@ -117,9 +126,8 @@ const TableEntry = (props) => {
 
             <WCol size="1">
                 {
-                    <div className={`table-text`}>
-                        { }
-                    </div>
+                    containsFlag ? <img src = {require('../../The World/' + name + " Flag.png")} className = "image-size"></img> : 
+                    <img src = {require('../../The World/No Flag.png')} className = "image-size"></img>
                 }
             </WCol>
 
