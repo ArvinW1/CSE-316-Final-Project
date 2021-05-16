@@ -29,17 +29,17 @@ const LandmarkContent = (props) => {
                         autoFocus={true} type='text'
                         inputClass="table-input-class" defaultValue={props.data.name}
                     /> :
-                    <div className={'landmark-content'} onClick={() => toggleEditName(!editingName)}>
+                    <div className={ editable ? 'landmark-content' : 'landmark-content-disabled'} onClick={() => toggleEditName(!editingName)}>
                         {props.data.name}
                     </div>}
             </WCol>
             <WCol size="1">
-                <div className={'landmark-content'}>
+                <div className={ editable ? 'landmark-information' : 'landmark-content-disabled'}>
                     -
                 </div>
             </WCol>
             <WCol size="5">
-                <div className={'landmark-content'}>
+                <div className={ editable ? 'landmark-information' : 'landmark-content-disabled'}>
                     {props.data.location}
                 </div>
             </WCol>

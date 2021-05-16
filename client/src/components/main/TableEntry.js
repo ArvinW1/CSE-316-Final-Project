@@ -23,7 +23,6 @@ const TableEntry = (props) => {
     const images = importAll(require.context('../../The World', false, /\.(png|jpe?g|svg)$/));
     
     const containsFlag = images.includes(name + " Flag.png")
-    const disabledButton = () => { }
 
     const handleNameEdit = (e) => {
         props.toggleName(false);

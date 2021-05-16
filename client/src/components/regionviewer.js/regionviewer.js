@@ -255,12 +255,12 @@ const Regionviewer = (props) => {
     }
 
     function traverse(subregions) {
-        let tempEntries = []
+        let tempEntries = [];
         console.log(subregions)
         if (subregions) {
             for (let id of subregions) {
                 let tempMap = maps.find(map => map._id === id)
-                tempEntries = tempMap.landmarks;
+                tempEntries = tempEntries.concat(tempMap.landmarks);
                 tempEntries = tempEntries.concat(traverse(tempMap.subregions))
             }
         }

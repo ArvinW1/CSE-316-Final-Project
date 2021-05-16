@@ -1,22 +1,14 @@
 import Logo from '../navbar/Logo';
 import Login from '../modals/Login';
 import Delete from '../modals/Delete';
-import MainContents from '../main/MainContents';
 import CreateAccount from '../modals/CreateAccount';
 import NavbarOptions from '../navbar/NavbarOptions';
 import * as mutations from '../../cache/mutations';
-import SidebarContents from '../sidebar/SidebarContents';
 import { GET_DB_MAP } from '../../cache/queries';
 import React, { useState, Component } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { WNavbar, WSidebar, WNavItem } from 'wt-frontend';
 import { WLayout, WLHeader, WLMain, WLSide, WButton, WCard, WCFooter } from 'wt-frontend';
-import {
-	UpdateListField_Transaction,
-	SortItems_Transaction,
-	UpdateListItems_Transaction,
-	ReorderItems_Transaction,
-} from '../../utils/jsTPS';
 import { withRouter } from 'react-router-dom';
 import UpdateAccount from '../modals/UpdateAccount';
 import SidebarList from '../sidebar/SidebarList';

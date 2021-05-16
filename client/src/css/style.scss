@@ -55,31 +55,6 @@ html, body {
     background-color: $background-color;
 }
 
-.complete-task {
-    color: var(--light-blue);
-}
-
-.incomplete-task {
-    color: $primary-color;
-}
-
-.complete-task-assignedTo {
-    color: var(--blue-slate-darker);
-}
-
-.incomplete-task-assignedTo {
-    color: var(--warning-color);
-}
-
-.incomplete-task {
-    color: $primary-color;
-}
-
-.list-item-active {
-    color: $primary-color;
-    font-weight: bold;
-
-}
 
 .list-item {
     color: black;
@@ -91,7 +66,7 @@ html, body {
 .mapIcon{
     background-color: rgb(238, 212, 212);
 }
-.list-item:hover {
+.list-item:hover, .landmark-content:hover {
     background-color: var(--warm-white-transparent);
 
 }
@@ -119,9 +94,6 @@ html, body {
     color: $primary-color;
 }
 
-.sidebar-header {
-    border-bottom: 2px dotted;
-}
 
 .sidebar-buttons-disabled {
     cursor: default;
@@ -130,23 +102,13 @@ html, body {
     background-color: #40454e;
 }
 
-.sidebar-header-name {
-    font-size: 1.375rem;
-    font-weight: bold;
-    padding: 0;
-    color: $text-color;
-}
 
-.table-entries {
-    scrollbar-width: thin;
-}
-
-.table-entries::-webkit-scrollbar, .wsidebar::-webkit-scrollbar, .landmark-table-content::-webkit-scrollbar, .ancestor::-webkit-scrollbar {
+.wsidebar::-webkit-scrollbar, .landmark-table-content::-webkit-scrollbar, .ancestor::-webkit-scrollbar {
 	width: 5px;
 	height: 8px;
 	background-color: var(--darkblue-gray); 
 }
-.table-entries::-webkit-scrollbar-thumb, .wsidebar::-webkit-scrollbar-thumb, .landmark-table-content::-webkit-scrollbar-thumb, .ancestor::-webkit-scrollbar-thumb {
+.wsidebar::-webkit-scrollbar-thumb, .landmark-table-content::-webkit-scrollbar-thumb, .ancestor::-webkit-scrollbar-thumb {
 	width: 5px;
 	height: 8px;
 	background-color: var(--blue-gray); 
@@ -227,13 +189,4 @@ html, body {
 
 .undo-redo {
     color: $text-color;
-}
-
-.table-entry-buttons {
-    color: $text-color;
-}
-
-.table-entry-buttons-disabled {
-    color: var(--warm-black);
-    cursor: default;
 }
