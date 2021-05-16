@@ -102,6 +102,20 @@ html {
     display: block !important;
 }
 
+.table-header-section-no-hover{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    padding-top: 24px;
+    padding-bottom: 12px;
+    text-align: center;
+    display: block !important;
+    font-size: 1.375rem;
+    font-weight: bold;
+    color: #e9edf0;
+    pointer-events: none;
+}
+
 .table-header-button {
     padding: 0;
     margin-left: 36px;

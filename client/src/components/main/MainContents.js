@@ -18,12 +18,9 @@ const MainContents = (props) => {
                 <WCContent >
                     <WCard wLayout={"header-content"} className="subregion-content-table">
                         <WCHeader className="subregion-content-header">
-                            <TableHeader
-                                // disabled={!props.activeList._id}        addItem={props.addItem}
-                                // undo={props.undo} redo={props.redo}     canUndo={props.canUndo} 
-                                // canRedo={props.canRedo}                 setShowDelete={props.setShowDelete}
-                                // setActiveList={props.setActiveList}     
+                            <TableHeader 
                                 sort={props.sort}
+                                activeList={props.activeList}
                             />
                         </WCHeader>
 
