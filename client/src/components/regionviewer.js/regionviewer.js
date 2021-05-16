@@ -299,12 +299,12 @@ const Regionviewer = (props) => {
                     </ul>
 
                     <ul><WNavItem>
-                        <WButton className={"subregion-button"}>
+                        <WButton className={location !== 0 ? "subregion-button" : 'subregion-button-disabled'}>
                             <i className="material-icons" onClick={moveBack}>arrow_back</i>
                         </WButton>
                     </WNavItem>
                         <WNavItem>
-                            <WButton className={"subregion-button"}>
+                            <WButton className={location !== subSize - 1 ? "subregion-button" : 'subregion-button-disabled'}>
                                 <i className="material-icons" onClick={moveForward}>arrow_forward</i>
                             </WButton>
                         </WNavItem></ul>
