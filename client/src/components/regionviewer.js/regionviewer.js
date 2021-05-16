@@ -12,6 +12,7 @@ import * as mutations from '../../cache/mutations';
 import { ChangeParent_Transaction, UpdateLandmark_Transaction, EditLandmark_Transaction } from '../../utils/jsTPS';
 import RegionInput from './RegionInput';
 import RegionLandmark from './RegionLandmark';
+import Delete from '../modals/Delete';
 
 const Regionviewer = (props) => {
 
@@ -31,7 +32,9 @@ const Regionviewer = (props) => {
 
     const auth = props.user === null ? false : true;
     const [activeList, setActiveList] = useState({});
+    const [toDeleteLandmark, setToDelete] = useState({});
     const [showLogin, toggleShowLogin] = useState(false);
+    const [showDelete, toggleShowDelete] = useState(false);
     const [showCreate, toggleShowCreate] = useState(false);
     const [showUpdate, toggleShowUpdate] = useState(false);
     const [possibleParents, setPossibleParents] = useState({});
@@ -191,19 +194,30 @@ const Regionviewer = (props) => {
 
     const setShowLogin = () => {
         toggleShowCreate(false);
+        toggleShowDelete(false);
         toggleShowUpdate(false);
         toggleShowLogin(!showLogin);
     };
 
     const setShowCreate = () => {
         toggleShowLogin(false);
+        toggleShowDelete(false);
         toggleShowUpdate(false);
         toggleShowCreate(!showCreate);
     };
 
+    const setShowDelete = (landmarkId) => {
+		setToDelete(landmarkId)
+		toggleShowCreate(false);
+		toggleShowLogin(false);
+		toggleShowUpdate(false);
+		toggleShowDelete(!showDelete)
+	};
+
 
     const setShowUpdate = () => {
         toggleShowCreate(false);
+        toggleShowDelete(false);
         toggleShowLogin(false);
         toggleShowUpdate(!showUpdate)
     };
@@ -363,7 +377,7 @@ const Regionviewer = (props) => {
                 <div className="landmark-header"> Region Landmarks: </div>
                 <WCard className="landmark-table" wLayout="content-footer">
                     <WCContent className="landmark-table-content">
-                        <RegionLandmark entries={removedDup} activeList={activeList} deleteLandmark={deleteLandmark} editLandmark={editLandmark} maps={maps} />
+                        <RegionLandmark entries={removedDup} activeList={activeList} deleteLandmark={deleteLandmark} setShowDelete = {setShowDelete} editLandmark={editLandmark} maps={maps} />
                     </WCContent>
                     <WCFooter className="landmark-table-footer">
                         <RegionInput createNewLandmark={createNewLandmark} entries={removedDup} />
@@ -374,6 +388,9 @@ const Regionviewer = (props) => {
 
             {
                 showUpdate && (<UpdateAccount user={props.user} fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} />)
+            }
+            {
+                showDelete && (<Delete deleteMap ={deleteLandmark} activeid = {toDeleteLandmark} setShowDelete = {setShowDelete}/>)
             }
 
         </WLayout>

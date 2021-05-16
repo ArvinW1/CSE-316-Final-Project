@@ -17,7 +17,7 @@ const LandmarkContent = (props) => {
         <WRow >
             <WCol size="1">{
                 editable && <WButton className={"subregion-button"}>
-                    <i className="material-icons" onClick={() => props.deleteLandmark(props.data._id)}>delete</i>
+                    <i className="material-icons" onClick={() => props.setShowDelete(props.data._id)}>delete</i>
                 </WButton>
             }
             </WCol>
