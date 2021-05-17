@@ -8,7 +8,7 @@ const RegionInput = (props) => {
     const handleAddLandmark = () =>{
         let existing = false;
         for(let landmarks of props.entries){
-            if(landmarks.name === input){
+            if(landmarks.name.toLowerCase() === input.toLowerCase()){
                 existing = true;
             }
         }

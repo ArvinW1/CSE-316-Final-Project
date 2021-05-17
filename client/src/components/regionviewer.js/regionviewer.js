@@ -250,11 +250,11 @@ const Regionviewer = (props) => {
     }
 
     const navigateToSpreadsheet = () => {
+        props.tps.clearAllTransactions();
         props.history.push("/Spreadsheet/" + parentRegion._id)
     }
 
     const moveForward = () => {
-        console.log(location)
         if (location !== (subSize - 1)) {
             props.history.push("/Regionviewer/" + parentRegion.subregions[location + 1]);
             props.tps.clearAllTransactions();
@@ -270,7 +270,6 @@ const Regionviewer = (props) => {
 
     function traverse(subregions) {
         let tempEntries = [];
-        console.log(subregions)
         if (subregions) {
             for (let id of subregions) {
                 let tempMap = maps.find(map => map._id === id)
@@ -286,7 +285,7 @@ const Regionviewer = (props) => {
         for (let landmark of entries) {
             let added = false;
             for (let exist of removedDup) {
-                if (exist.name === landmark.name) {
+                if (exist.name.toLowerCase() === landmark.name.toLowerCase()) {
                     added = true;
                 }
             }
